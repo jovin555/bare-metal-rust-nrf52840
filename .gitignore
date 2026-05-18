@@ -1,0 +1,6 @@
+.env
+*.swp
+*.swo
+build/
+__pycache__/
+*.pyc
