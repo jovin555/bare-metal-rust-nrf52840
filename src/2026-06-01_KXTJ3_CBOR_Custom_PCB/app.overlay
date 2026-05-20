@@ -1,0 +1,20 @@
+/*
+ * Application overlay for my_custom_board.
+ *
+ * The KXTJ3-1057 I2C node is already defined in the board DTS.
+ * This overlay only adds the USB CDC-ACM shell routing.
+ */
+
+/ {
+	chosen {
+		zephyr,console    = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+		label = "CDC_ACM_0";
+	};
+};
