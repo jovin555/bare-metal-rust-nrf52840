@@ -27,7 +27,7 @@ Each day introduces one concept, one working example, and one buildable project.
 ---
 
 
-# 2026-05-16 - Introduction to Zephyr RTOS
+# Day 1 — Introduction to Zephyr RTOS
 
 ## Goal
 Learn what Zephyr is, why it exists, and how it differs from other embedded RTOS options.
@@ -57,14 +57,14 @@ Understanding these concepts helps you read Zephyr examples, choose the right bo
 3. Make a list of one board and one feature you want to explore next.
 
 ## Example folder
-See `src/2026-05-16_Introduction_to_Zephyr_RTOS` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-16_Introduction_to_Zephyr_RTOS](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-16_Introduction_to_Zephyr_RTOS)
 
 ## Next topic
 Tomorrow, we will explore Zephyr project structure and the build system in depth.
 ---
 
 
-# 2026-05-17 - Zephyr Project Structure and Build System
+# Day 2 — Zephyr Project Structure and Build System
 
 ## Goal
 Understand how a Zephyr application is organized and how the build system compiles it.
@@ -98,14 +98,14 @@ Knowing the build structure helps you create valid Zephyr apps and troubleshoot 
 3. Open the generated `build/zephyr/zephyr.elf` or build log to inspect compile steps.
 
 ## Example folder
-See `src/2026-05-17_Zephyr_Project_Structure` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-17_Zephyr_Project_Structure](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-17_Zephyr_Project_Structure)
 
 ## Next topic
 Tomorrow, we will cover Device Tree basics and how Zephyr maps hardware in software.
 ---
 
 
-# 2026-05-18 - Device Tree Basics in Zephyr
+# Day 3 — Device Tree Basics in Zephyr
 
 ## Goal
 Learn the fundamentals of Zephyr Device Tree and how hardware is described for your board.
@@ -140,14 +140,14 @@ Device Tree allows portable hardware code, so the same application can run on di
 3. Write a tiny `main.c` that fetches the device with `DEVICE_DT_GET`.
 
 ## Example folder
-See `src/2026-05-18_Device_Tree_Basics` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-18_Device_Tree_Basics](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-18_Device_Tree_Basics)
 
 ## Next topic
 Tomorrow, we will study Kconfig and `prj.conf` configuration in Zephyr.
 ---
 
 
-# 2026-05-19 - Kconfig and prj.conf Configuration
+# Day 4 — Kconfig and prj.conf Configuration
 
 ## Goal
 Understand how Zephyr features are enabled and configured using Kconfig and `prj.conf`.
@@ -176,14 +176,14 @@ Correct configuration helps reduce firmware size, avoid conflicts, and enable th
 3. Try enabling and disabling a feature to see how it affects compile output.
 
 ## Example folder
-See `src/2026-05-19_Kconfig_prj_conf` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-19_Kconfig_prj_conf](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-19_Kconfig_prj_conf)
 
 ## Next topic
 Tomorrow, we will write a basic Zephyr application with main loop and device initialization.
 ---
 
 
-# 2026-05-20 - Writing a Basic Zephyr Application
+# Day 5 — Writing a Basic Zephyr Application
 
 ## Goal
 Build a simple Zephyr application from scratch and understand the entry point and runtime model.
@@ -212,14 +212,14 @@ This is the core of application development: writing code that interacts with th
 3. Use `k_sleep()` and `printk()` to observe behavior.
 
 ## Example folder
-See `src/2026-05-20_Basic_Zephyr_Application` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-20_Basic_Zephyr_Application](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-20_Basic_Zephyr_Application)
 
 ## Next topic
 Tomorrow, we will learn how to use Zephyr drivers and device binding properly.
 ---
 
 
-# 2026-05-21 - Using Zephyr Drivers and Device Binding
+# Day 6 — Using Zephyr Drivers and Device Binding
 
 ## Goal
 Learn how Zephyr drivers are accessed in code and how to bind to hardware devices.
@@ -252,14 +252,14 @@ Correct device binding ensures your code works with the actual hardware and is p
 3. Explore a sample driver API such as sensor, PWM, or I2C.
 
 ## Example folder
-See `src/2026-05-21_Zephyr_Drivers_and_Binding` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-21_Zephyr_Drivers_and_Binding](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-21_Zephyr_Drivers_and_Binding)
 
 ## Next topic
 Tomorrow, we will cover debugging and testing Zephyr applications.
 ---
 
 
-# 2026-05-22 - Debugging and Testing Zephyr Applications
+# Day 7 — Debugging and Testing Zephyr Applications
 
 ## Goal
 Understand the Zephyr debugging and testing workflow for finding and fixing issues.
@@ -288,14 +288,14 @@ Good debugging practices accelerate learning, reduce frustration, and help you u
 3. Review build warnings and fix one configuration or code issue.
 
 ## Example folder
-See `src/2026-05-22_Debugging_and_Testing` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-22_Debugging_and_Testing](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-22_Debugging_and_Testing)
 
 ## Next topic
 After this, you can continue with advanced Zephyr concepts such as Bluetooth, networking, and power management.
 ---
 
 
-# 2026-05-23 - Threads and Synchronization
+# Day 8 — Threads and Synchronization
 
 ## Goal
 Learn how to create and manage multiple threads in Zephyr and synchronize them using semaphores, mutexes, and message queues.
@@ -353,7 +353,7 @@ Almost every real embedded application uses multiple threads: one for sensors, o
 3. Pass an integer counter from a producer thread to a consumer thread via `k_msgq`.
 
 ## Example folder
-See `src/2026-05-23_Threads_and_Synchronization` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-23_Threads_and_Synchronization](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-23_Threads_and_Synchronization)
 
 ## Next topic
 Tomorrow we explore GPIO configuration and interrupt-driven input handling.
@@ -361,7 +361,7 @@ Tomorrow we explore GPIO configuration and interrupt-driven input handling.
 ---
 
 
-# 2026-05-24 - GPIO and Interrupts
+# Day 9 — GPIO and Interrupts
 
 ## Goal
 Learn how to configure GPIO pins in Zephyr for input and output, and how to respond to pin state changes using hardware interrupts.
@@ -420,7 +420,7 @@ GPIO is the foundation of hardware interaction. LEDs, buttons, relays, and many 
 3. Use an interrupt on `sw0` to toggle `led0` on each press.
 
 ## Example folder
-See `src/2026-05-24_GPIO_and_Interrupts` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-24_GPIO_and_Interrupts](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-24_GPIO_and_Interrupts)
 
 ## Next topic
 Tomorrow we learn how to define a custom PCB as a Zephyr board target.
@@ -428,7 +428,7 @@ Tomorrow we learn how to define a custom PCB as a Zephyr board target.
 ---
 
 
-# 2026-05-25 - Custom PCB Board Definition in Zephyr
+# Day 10 — Custom PCB Board Definition
 
 ## Goal
 Learn how to define a custom PCB as a named Zephyr board target so that your hardware is fully described by Device Tree and Kconfig rather than relying on a stock evaluation kit.
@@ -560,10 +560,10 @@ Every production product needs a custom board definition. Keeping hardware descr
 ## Practice tasks
 1. Copy the `nrf52840dk` board directory from the Zephyr tree and rename it to `my_custom_board`.
 2. Change the LED GPIO pin to match a pin on your schematic.
-3. Build `src/2026-05-25_Custom_PCB_Board_Definition` targeting `my_custom_board`.
+3. Build the example targeting `my_custom_board` — see [src/2026-05-25_Custom_PCB_Board_Definition](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-25_Custom_PCB_Board_Definition).
 
 ## Example folder
-See `src/2026-05-25_Custom_PCB_Board_Definition` for the day's code and a sample `boards/` skeleton.
+View the complete source code on GitHub: [src/2026-05-25_Custom_PCB_Board_Definition](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-25_Custom_PCB_Board_Definition)
 
 ## Next topic
 Tomorrow we enable USB CDC-ACM so the board can communicate with a PC over USB.
@@ -571,7 +571,7 @@ Tomorrow we enable USB CDC-ACM so the board can communicate with a PC over USB.
 ---
 
 
-# 2026-05-26 - USB CDC-ACM Communication
+# Day 11 — USB CDC-ACM Communication
 
 ## Goal
 Enable USB communication on the nRF52840 so the board appears as a virtual serial port (COM port) on a connected PC.
@@ -662,7 +662,7 @@ USB serial is the most practical way to exchange data between an embedded device
 3. Send a byte from the PC and echo it back from the firmware.
 
 ## Example folder
-See `src/2026-05-26_USB_CDC_ACM` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-26_USB_CDC_ACM](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-26_USB_CDC_ACM)
 
 ## Next topic
 Tomorrow we encode structured data using CBOR and send it over this USB connection.
@@ -670,7 +670,7 @@ Tomorrow we encode structured data using CBOR and send it over this USB connecti
 ---
 
 
-# 2026-05-27 - CBOR Encoding and Sending Data over USB
+# Day 12 — CBOR Encoding over USB
 
 ## Goal
 Use the CBOR (Concise Binary Object Representation) format to encode structured sensor data on the nRF52840 and transmit it over the USB CDC-ACM virtual serial port established in Day 11.
@@ -759,7 +759,7 @@ CBOR is the encoding of choice for CoAP, SenML, SUIT firmware updates, and many 
 3. Extend to an array of 5 historical readings inside the same CBOR packet.
 
 ## Example folder
-See `src/2026-05-27_CBOR_over_USB` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-27_CBOR_over_USB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-27_CBOR_over_USB)
 
 ## Next topic
 Tomorrow we explore the Zephyr Shell subsystem to build an interactive command-line interface over UART or USB.
@@ -767,7 +767,7 @@ Tomorrow we explore the Zephyr Shell subsystem to build an interactive command-l
 ---
 
 
-# 2026-05-28 - Zephyr Shell Subsystem
+# Day 13 — Zephyr Shell Subsystem
 
 ## Goal
 Use Zephyr's built-in Shell subsystem to add an interactive command-line interface to your firmware, accessible over UART or USB.
@@ -855,7 +855,7 @@ A shell interface is invaluable for calibration, diagnostics, and field testing.
 3. Add a `read temp` subcommand that prints a simulated temperature value.
 
 ## Example folder
-See `src/2026-05-28_Zephyr_Shell` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-28_Zephyr_Shell](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-28_Zephyr_Shell)
 
 ## Next topic
 Tomorrow we read data from a real I2C sensor and log it using everything learned so far.
@@ -863,7 +863,7 @@ Tomorrow we read data from a real I2C sensor and log it using everything learned
 ---
 
 
-# 2026-05-29 - I2C Sensor Integration
+# Day 14 — I2C Sensor Integration
 
 ## Goal
 Read data from a real I2C sensor using Zephyr's sensor API, combining Device Tree configuration, driver binding, and the logging skills from previous days.
@@ -954,7 +954,7 @@ Almost every IoT product reads from sensors. The Zephyr sensor API means you can
 3. Combine with Day 12: encode the sensor reading as CBOR and send it over USB.
 
 ## Example folder
-See `src/2026-05-29_I2C_Sensor_Integration` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-29_I2C_Sensor_Integration](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-29_I2C_Sensor_Integration)
 
 ## Next topic
 You now have the core building blocks. Next steps include BLE, power management, firmware updates via SUIT/MCUboot, and production hardening.
@@ -962,7 +962,7 @@ You now have the core building blocks. Next steps include BLE, power management,
 ---
 
 
-# 2026-05-30 - KXTJ3-1057 Accelerometer with USB Shell
+# Day 15 — KXTJ3-1057 Accelerometer with USB Shell
 
 ## Goal
 Implement a custom I2C driver for the KXTJ3-1057 3-axis accelerometer and expose it through an interactive Zephyr Shell over USB CDC-ACM.
@@ -1013,7 +1013,7 @@ Bit 3: GSEL0 — range select LSB
 
 ## Project structure
 ```
-2026-05-30_KXTJ3_Accel_USB_Shell/
+src/2026-05-30_KXTJ3_Accel_USB_Shell/
 ├── CMakeLists.txt
 ├── prj.conf
 ├── app.overlay
@@ -1064,7 +1064,7 @@ Many sensors used in production products are not supported by Zephyr's upstream 
 4. Extend `accel stream` to also encode data as CBOR (combine with Day 12).
 
 ## Example folder
-See `src/2026-05-30_KXTJ3_Accel_USB_Shell` for the full driver and application code.
+View the complete source code on GitHub: [src/2026-05-30_KXTJ3_Accel_USB_Shell](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-30_KXTJ3_Accel_USB_Shell)
 
 ## Next topic
 Future topics: BLE peripheral advertising, MCUboot firmware updates, low-power sleep modes.
@@ -1072,7 +1072,7 @@ Future topics: BLE peripheral advertising, MCUboot firmware updates, low-power s
 ---
 
 
-# 2026-05-31 - KXTJ3-1057 Accelerometer with CBOR Encoding over USB
+# Day 16 — KXTJ3-1057 Accelerometer with CBOR over USB
 
 ## Goal
 Extend the KXTJ3-1057 driver from Day 15 to encode accelerometer readings as CBOR
@@ -1150,7 +1150,7 @@ descriptors.
 4. Switch to `accel range 4` mid-stream and confirm the mg values change scale.
 
 ## Example folder
-See `src/2026-05-31_KXTJ3_CBOR_USB` for the complete firmware and Python decoder.
+View the complete source code on GitHub: [src/2026-05-31_KXTJ3_CBOR_USB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-31_KXTJ3_CBOR_USB)
 
 ## Next topic
 Future topics: BLE peripheral advertising sensor data, MCUboot OTA updates,
@@ -1159,7 +1159,7 @@ low-power sleep with sensor wake-on-motion.
 ---
 
 
-# 2026-06-01 - KXTJ3-1057 CBOR Accelerometer on a Custom PCB
+# Day 17 — KXTJ3-1057 CBOR Accelerometer on Custom PCB
 
 ## Goal
 Deploy the KXTJ3-1057 CBOR-over-USB application from Day 16 onto a custom PCB
@@ -1257,7 +1257,7 @@ hardware description from application logic is the key skill that makes your
 firmware portable and maintainable across board revisions.
 
 ## Example folder
-See `src/2026-06-01_KXTJ3_CBOR_Custom_PCB` for the complete project.
+View the complete source code on GitHub: [src/2026-06-01_KXTJ3_CBOR_Custom_PCB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-01_KXTJ3_CBOR_Custom_PCB)
 
 ## Next topic
 Future topics: BLE peripheral advertising, MCUboot OTA firmware updates,
@@ -1266,7 +1266,7 @@ low-power wake-on-motion using KXTJ3 interrupt pin.
 ---
 
 
-# 2026-06-02 - BLE Peripheral Advertising
+# Day 18 — BLE Peripheral Advertising
 
 ## Goal
 Set up the nRF52840 as a Bluetooth Low Energy (BLE) peripheral that advertises
@@ -1350,7 +1350,7 @@ add GATT services to expose data to connected clients.
    each time the device boots (combine with NVS from Day 22).
 
 ## Example folder
-See `src/2026-06-02_BLE_Peripheral_Advertising` for the day's code.
+View the complete source code on GitHub: [src/2026-06-02_BLE_Peripheral_Advertising](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-02_BLE_Peripheral_Advertising)
 
 ## Next topic
 Tomorrow we look at SPI communication to interface with external peripherals.
@@ -1358,7 +1358,7 @@ Tomorrow we look at SPI communication to interface with external peripherals.
 ---
 
 
-# 2026-06-03 - SPI Communication
+# Day 19 — SPI Communication
 
 ## Goal
 Use Zephyr's SPI API to communicate with an external SPI device — reading and
@@ -1462,7 +1462,7 @@ ADCs. The same `spi_transceive` API works for all of them.
 3. Try increasing the SPI clock frequency and confirm communication stays stable.
 
 ## Example folder
-See `src/2026-06-03_SPI_Communication` for the day's code.
+View the complete source code on GitHub: [src/2026-06-03_SPI_Communication](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-03_SPI_Communication)
 
 ## Next topic
 Tomorrow we read analog signals using the nRF52840's built-in ADC.
@@ -1470,7 +1470,7 @@ Tomorrow we read analog signals using the nRF52840's built-in ADC.
 ---
 
 
-# 2026-06-04 - ADC Reading
+# Day 20 — ADC Reading
 
 ## Goal
 Use the nRF52840's built-in 12-bit SAR ADC (SAADC) to read an analog voltage,
@@ -1574,7 +1574,7 @@ settings prevents measurement errors.
 3. Average 8 consecutive readings to reduce noise.
 
 ## Example folder
-See `src/2026-06-04_ADC_Reading` for the day's code.
+View the complete source code on GitHub: [src/2026-06-04_ADC_Reading](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-04_ADC_Reading)
 
 ## Next topic
 Tomorrow we use PWM to smoothly dim an LED and control servo position.
@@ -1582,7 +1582,7 @@ Tomorrow we use PWM to smoothly dim an LED and control servo position.
 ---
 
 
-# 2026-06-05 - PWM LED Dimming
+# Day 21 — PWM LED Dimming
 
 ## Goal
 Use Zephyr's PWM API to smoothly dim and brighten an LED using a breathing
@@ -1694,7 +1694,7 @@ means you change a pin number in the overlay, not in the application code.
 3. Wire a buzzer to a PWM pin and play a 1 kHz tone.
 
 ## Example folder
-See `src/2026-06-05_PWM_LED_Dimming` for the day's code.
+View the complete source code on GitHub: [src/2026-06-05_PWM_LED_Dimming](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-05_PWM_LED_Dimming)
 
 ## Next topic
 Tomorrow we store configuration data in internal flash using Zephyr's NVS.
@@ -1702,7 +1702,7 @@ Tomorrow we store configuration data in internal flash using Zephyr's NVS.
 ---
 
 
-# 2026-06-06 - NVS Flash Storage
+# Day 22 — NVS Flash Storage
 
 ## Goal
 Use Zephyr's NVS (Non-Volatile Storage) subsystem to persist configuration
@@ -1831,7 +1831,7 @@ NVS is the simplest way to do this in Zephyr without a file system.
 3. Combine with the Shell (Day 13): add `config save` and `config load` commands.
 
 ## Example folder
-See `src/2026-06-06_NVS_Flash_Storage` for the day's code.
+View the complete source code on GitHub: [src/2026-06-06_NVS_Flash_Storage](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-06_NVS_Flash_Storage)
 
 ## Next topic
 Tomorrow we explore work queues and kernel timers for deferred and periodic tasks.
@@ -1839,7 +1839,7 @@ Tomorrow we explore work queues and kernel timers for deferred and periodic task
 ---
 
 
-# 2026-06-07 - Work Queues and Kernel Timers
+# Day 23 — Work Queues and Kernel Timers
 
 ## Goal
 Learn how to schedule deferred and periodic work in Zephyr using kernel timers
@@ -1945,7 +1945,7 @@ build responsive, non-blocking firmware without complex thread management.
 3. Create a dedicated work queue and move heavy logging there.
 
 ## Example folder
-See `src/2026-06-07_Work_Queues_and_Timers` for the day's code.
+View the complete source code on GitHub: [src/2026-06-07_Work_Queues_and_Timers](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-07_Work_Queues_and_Timers)
 
 ## Next topic
 Tomorrow we configure Zephyr's power management to put the nRF52840 into
@@ -1954,7 +1954,7 @@ low-power sleep between work items.
 ---
 
 
-# 2026-06-08 - Power Management and Sleep
+# Day 24 — Power Management and Sleep
 
 ## Goal
 Configure Zephyr's power management subsystem to put the nRF52840 into
@@ -2056,7 +2056,7 @@ Battery life is a critical spec for wearables and IoT sensors. A coin cell
    and boot-counts (NVS from Day 22) increments on each wake.
 
 ## Example folder
-See `src/2026-06-08_Power_Management_Sleep` for the day's code.
+View the complete source code on GitHub: [src/2026-06-08_Power_Management_Sleep](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-08_Power_Management_Sleep)
 
 ## Next topic
 You now have all the core Zephyr building blocks. Advanced topics:
