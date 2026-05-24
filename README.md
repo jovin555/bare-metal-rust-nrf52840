@@ -40,8 +40,10 @@ By the end of this course you will have written firmware that:
 
 ## Course outline
 
-| Day | Topic | Folder |
-|-----|-------|--------|
+| | Topic | Folder |
+|---|-------|--------|
+| Setup 1 | [The Zephyr SDK Toolchain](Learning%20Documents/Setup%201%20%E2%80%94%20The%20Zephyr%20SDK%20Toolchain.md) | — |
+| Setup 2 | [Zephyr Workspace and Folder Structure](Learning%20Documents/Setup%202%20%E2%80%94%20Zephyr%20Workspace%20and%20Folder%20Structure.md) | — |
 | 1 | [Introduction to Zephyr RTOS](Learning%20Documents/Day%2001%20%E2%80%94%20Introduction%20to%20Zephyr%20RTOS.md) | [src](src/2026-05-16_Introduction_to_Zephyr_RTOS/) |
 | 2 | [Zephyr Project Structure and Build System](Learning%20Documents/Day%2002%20%E2%80%94%20Zephyr%20Project%20Structure%20and%20Build%20System.md) | [src](src/2026-05-17_Zephyr_Project_Structure/) |
 | 3 | [Device Tree Basics in Zephyr](Learning%20Documents/Day%2003%20%E2%80%94%20Device%20Tree%20Basics%20in%20Zephyr.md) | [src](src/2026-05-18_Device_Tree_Basics/) |
