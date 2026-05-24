@@ -47,11 +47,13 @@ ls ~/zephyr-sdk-* 2>/dev/null && echo "SDK found" || echo "SDK not installed"
 If not installed:
 ```bash
 cd ~
-wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.16.8/zephyr-sdk-0.16.8_linux-x86_64.tar.xz
-tar xf zephyr-sdk-0.16.8_linux-x86_64.tar.xz
-cd zephyr-sdk-0.16.8
+wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+tar xf zephyr-sdk-0.17.0_linux-x86_64.tar.xz
+cd zephyr-sdk-0.17.0
 ./setup.sh
 ```
+
+> **Note:** SDK 0.17.0 is required for Zephyr 4.x. SDK 0.16.8 is incompatible — it will cause a CMake "could not find Zephyr-sdk compatible with version 1.0" error.
 
 ---
 
@@ -93,4 +95,4 @@ export ZEPHYR_BASE=/home/jovin/workspace/My-Zephyr-project/myworkspace/zephyr
 - `ZEPHYR_BASE` must **not** be set before running `west init` — unset it first if it points to `~/ncs/v2.4.2`.
 - The `.venv` folder is inside `myworkspace/` which is excluded from git (`.gitignore`).
 - If `west` is not found after activating the venv, re-run `pip install west` inside the activated environment.
-- SDK version `0.16.8` supports Zephyr v3.4 and later.
+- **SDK version `0.17.0`** is required for Zephyr 4.x. SDK 0.16.8 only supports Zephyr up to 3.x.
