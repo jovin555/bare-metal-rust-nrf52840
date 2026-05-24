@@ -1,4 +1,4 @@
-# 2026-05-25 - Custom PCB Board Definition in Zephyr
+# Day 10 — Custom PCB Board Definition
 
 ## Goal
 Learn how to define a custom PCB as a named Zephyr board target so that your hardware is fully described by Device Tree and Kconfig rather than relying on a stock evaluation kit.
@@ -133,7 +133,7 @@ Every production product needs a custom board definition. Keeping hardware descr
 3. Build `src/2026-05-25_Custom_PCB_Board_Definition` targeting `my_custom_board`.
 
 ## Example folder
-See `src/2026-05-25_Custom_PCB_Board_Definition` for the day's code and a sample `boards/` skeleton.
+View the complete source code on GitHub: [src/2026-05-25_Custom_PCB_Board_Definition](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-25_Custom_PCB_Board_Definition)
 
 ## Next topic
 Tomorrow we enable USB CDC-ACM so the board can communicate with a PC over USB.

@@ -1,4 +1,4 @@
-# 2026-06-02 - BLE Peripheral Advertising
+# Day 18 — BLE Peripheral Advertising
 
 ## Goal
 Set up the nRF52840 as a Bluetooth Low Energy (BLE) peripheral that advertises
@@ -82,7 +82,7 @@ add GATT services to expose data to connected clients.
    each time the device boots (combine with NVS from Day 22).
 
 ## Example folder
-See `src/2026-06-02_BLE_Peripheral_Advertising` for the day's code.
+View the complete source code on GitHub: [src/2026-06-02_BLE_Peripheral_Advertising](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-02_BLE_Peripheral_Advertising)
 
 ## Next topic
 Tomorrow we look at SPI communication to interface with external peripherals.

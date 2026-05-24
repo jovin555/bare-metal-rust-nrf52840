@@ -1,4 +1,4 @@
-# 2026-05-19 - Kconfig and prj.conf Configuration
+# Day 4 — Kconfig and prj.conf Configuration
 
 ## Goal
 Understand how Zephyr features are enabled and configured using Kconfig and `prj.conf`.
@@ -27,7 +27,7 @@ Correct configuration helps reduce firmware size, avoid conflicts, and enable th
 3. Try enabling and disabling a feature to see how it affects compile output.
 
 ## Example folder
-See `src/2026-05-19_Kconfig_prj_conf` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-19_Kconfig_prj_conf](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-19_Kconfig_prj_conf)
 
 ## Next topic
 Tomorrow, we will write a basic Zephyr application with main loop and device initialization.

@@ -1,4 +1,4 @@
-# 2026-05-20 - Writing a Basic Zephyr Application
+# Day 5 — Writing a Basic Zephyr Application
 
 ## Goal
 Build a simple Zephyr application from scratch and understand the entry point and runtime model.
@@ -27,7 +27,7 @@ This is the core of application development: writing code that interacts with th
 3. Use `k_sleep()` and `printk()` to observe behavior.
 
 ## Example folder
-See `src/2026-05-20_Basic_Zephyr_Application` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-20_Basic_Zephyr_Application](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-20_Basic_Zephyr_Application)
 
 ## Next topic
 Tomorrow, we will learn how to use Zephyr drivers and device binding properly.

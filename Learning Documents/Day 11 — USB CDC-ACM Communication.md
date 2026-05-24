@@ -1,4 +1,4 @@
-# 2026-05-26 - USB CDC-ACM Communication
+# Day 11 — USB CDC-ACM Communication
 
 ## Goal
 Enable USB communication on the nRF52840 so the board appears as a virtual serial port (COM port) on a connected PC.
@@ -89,7 +89,7 @@ USB serial is the most practical way to exchange data between an embedded device
 3. Send a byte from the PC and echo it back from the firmware.
 
 ## Example folder
-See `src/2026-05-26_USB_CDC_ACM` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-26_USB_CDC_ACM](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-26_USB_CDC_ACM)
 
 ## Next topic
 Tomorrow we encode structured data using CBOR and send it over this USB connection.

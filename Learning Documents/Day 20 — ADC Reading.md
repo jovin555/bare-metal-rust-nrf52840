@@ -1,4 +1,4 @@
-# 2026-06-04 - ADC Reading
+# Day 20 — ADC Reading
 
 ## Goal
 Use the nRF52840's built-in 12-bit SAR ADC (SAADC) to read an analog voltage,
@@ -102,7 +102,7 @@ settings prevents measurement errors.
 3. Average 8 consecutive readings to reduce noise.
 
 ## Example folder
-See `src/2026-06-04_ADC_Reading` for the day's code.
+View the complete source code on GitHub: [src/2026-06-04_ADC_Reading](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-04_ADC_Reading)
 
 ## Next topic
 Tomorrow we use PWM to smoothly dim an LED and control servo position.

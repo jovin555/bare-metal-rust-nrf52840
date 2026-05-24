@@ -1,4 +1,4 @@
-# 2026-05-30 - KXTJ3-1057 Accelerometer with USB Shell
+# Day 15 — KXTJ3-1057 Accelerometer with USB Shell
 
 ## Goal
 Implement a custom I2C driver for the KXTJ3-1057 3-axis accelerometer and expose it through an interactive Zephyr Shell over USB CDC-ACM.
@@ -100,7 +100,7 @@ Many sensors used in production products are not supported by Zephyr's upstream 
 4. Extend `accel stream` to also encode data as CBOR (combine with Day 12).
 
 ## Example folder
-See `src/2026-05-30_KXTJ3_Accel_USB_Shell` for the full driver and application code.
+View the complete source code on GitHub: [src/2026-05-30_KXTJ3_Accel_USB_Shell](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-30_KXTJ3_Accel_USB_Shell)
 
 ## Next topic
 Future topics: BLE peripheral advertising, MCUboot firmware updates, low-power sleep modes.

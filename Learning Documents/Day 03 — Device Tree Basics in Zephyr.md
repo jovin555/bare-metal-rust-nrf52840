@@ -1,4 +1,4 @@
-# 2026-05-18 - Device Tree Basics in Zephyr
+# Day 3 — Device Tree Basics in Zephyr
 
 ## Goal
 Learn the fundamentals of Zephyr Device Tree and how hardware is described for your board.
@@ -33,7 +33,7 @@ Device Tree allows portable hardware code, so the same application can run on di
 3. Write a tiny `main.c` that fetches the device with `DEVICE_DT_GET`.
 
 ## Example folder
-See `src/2026-05-18_Device_Tree_Basics` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-18_Device_Tree_Basics](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-18_Device_Tree_Basics)
 
 ## Next topic
 Tomorrow, we will study Kconfig and `prj.conf` configuration in Zephyr.

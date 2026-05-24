@@ -1,4 +1,4 @@
-# 2026-05-22 - Debugging and Testing Zephyr Applications
+# Day 7 — Debugging and Testing Zephyr Applications
 
 ## Goal
 Understand the Zephyr debugging and testing workflow for finding and fixing issues.
@@ -27,7 +27,7 @@ Good debugging practices accelerate learning, reduce frustration, and help you u
 3. Review build warnings and fix one configuration or code issue.
 
 ## Example folder
-See `src/2026-05-22_Debugging_and_Testing` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-22_Debugging_and_Testing](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-22_Debugging_and_Testing)
 
 ## Next topic
 After this, you can continue with advanced Zephyr concepts such as Bluetooth, networking, and power management.

@@ -1,4 +1,4 @@
-# 2026-05-23 - Threads and Synchronization
+# Day 8 — Threads and Synchronization
 
 ## Goal
 Learn how to create and manage multiple threads in Zephyr and synchronize them using semaphores, mutexes, and message queues.
@@ -56,7 +56,7 @@ Almost every real embedded application uses multiple threads: one for sensors, o
 3. Pass an integer counter from a producer thread to a consumer thread via `k_msgq`.
 
 ## Example folder
-See `src/2026-05-23_Threads_and_Synchronization` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-23_Threads_and_Synchronization](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-23_Threads_and_Synchronization)
 
 ## Next topic
 Tomorrow we explore GPIO configuration and interrupt-driven input handling.

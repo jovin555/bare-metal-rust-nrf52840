@@ -1,4 +1,4 @@
-# 2026-05-24 - GPIO and Interrupts
+# Day 9 — GPIO and Interrupts
 
 ## Goal
 Learn how to configure GPIO pins in Zephyr for input and output, and how to respond to pin state changes using hardware interrupts.
@@ -57,7 +57,7 @@ GPIO is the foundation of hardware interaction. LEDs, buttons, relays, and many 
 3. Use an interrupt on `sw0` to toggle `led0` on each press.
 
 ## Example folder
-See `src/2026-05-24_GPIO_and_Interrupts` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-24_GPIO_and_Interrupts](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-24_GPIO_and_Interrupts)
 
 ## Next topic
 Tomorrow we learn how to define a custom PCB as a Zephyr board target.

@@ -1,4 +1,4 @@
-# 2026-06-06 - NVS Flash Storage
+# Day 22 — NVS Flash Storage
 
 ## Goal
 Use Zephyr's NVS (Non-Volatile Storage) subsystem to persist configuration
@@ -127,7 +127,7 @@ NVS is the simplest way to do this in Zephyr without a file system.
 3. Combine with the Shell (Day 13): add `config save` and `config load` commands.
 
 ## Example folder
-See `src/2026-06-06_NVS_Flash_Storage` for the day's code.
+View the complete source code on GitHub: [src/2026-06-06_NVS_Flash_Storage](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-06_NVS_Flash_Storage)
 
 ## Next topic
 Tomorrow we explore work queues and kernel timers for deferred and periodic tasks.

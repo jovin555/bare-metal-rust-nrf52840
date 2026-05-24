@@ -1,4 +1,4 @@
-# 2026-05-29 - I2C Sensor Integration
+# Day 14 — I2C Sensor Integration
 
 ## Goal
 Read data from a real I2C sensor using Zephyr's sensor API, combining Device Tree configuration, driver binding, and the logging skills from previous days.
@@ -89,7 +89,7 @@ Almost every IoT product reads from sensors. The Zephyr sensor API means you can
 3. Combine with Day 12: encode the sensor reading as CBOR and send it over USB.
 
 ## Example folder
-See `src/2026-05-29_I2C_Sensor_Integration` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-29_I2C_Sensor_Integration](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-29_I2C_Sensor_Integration)
 
 ## Next topic
 You now have the core building blocks. Next steps include BLE, power management, firmware updates via SUIT/MCUboot, and production hardening.

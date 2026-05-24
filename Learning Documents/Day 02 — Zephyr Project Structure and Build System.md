@@ -1,4 +1,4 @@
-# 2026-05-17 - Zephyr Project Structure and Build System
+# Day 2 — Zephyr Project Structure and Build System
 
 ## Goal
 Understand how a Zephyr application is organized and how the build system compiles it.
@@ -32,7 +32,7 @@ Knowing the build structure helps you create valid Zephyr apps and troubleshoot 
 3. Open the generated `build/zephyr/zephyr.elf` or build log to inspect compile steps.
 
 ## Example folder
-See `src/2026-05-17_Zephyr_Project_Structure` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-17_Zephyr_Project_Structure](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-17_Zephyr_Project_Structure)
 
 ## Next topic
 Tomorrow, we will cover Device Tree basics and how Zephyr maps hardware in software.

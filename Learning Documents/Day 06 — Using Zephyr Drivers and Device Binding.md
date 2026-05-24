@@ -1,4 +1,4 @@
-# 2026-05-21 - Using Zephyr Drivers and Device Binding
+# Day 6 — Using Zephyr Drivers and Device Binding
 
 ## Goal
 Learn how Zephyr drivers are accessed in code and how to bind to hardware devices.
@@ -31,7 +31,7 @@ Correct device binding ensures your code works with the actual hardware and is p
 3. Explore a sample driver API such as sensor, PWM, or I2C.
 
 ## Example folder
-See `src/2026-05-21_Zephyr_Drivers_and_Binding` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-21_Zephyr_Drivers_and_Binding](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-21_Zephyr_Drivers_and_Binding)
 
 ## Next topic
 Tomorrow, we will cover debugging and testing Zephyr applications.

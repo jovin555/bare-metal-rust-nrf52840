@@ -1,4 +1,4 @@
-# 2026-06-03 - SPI Communication
+# Day 19 — SPI Communication
 
 ## Goal
 Use Zephyr's SPI API to communicate with an external SPI device — reading and
@@ -102,7 +102,7 @@ ADCs. The same `spi_transceive` API works for all of them.
 3. Try increasing the SPI clock frequency and confirm communication stays stable.
 
 ## Example folder
-See `src/2026-06-03_SPI_Communication` for the day's code.
+View the complete source code on GitHub: [src/2026-06-03_SPI_Communication](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-03_SPI_Communication)
 
 ## Next topic
 Tomorrow we read analog signals using the nRF52840's built-in ADC.

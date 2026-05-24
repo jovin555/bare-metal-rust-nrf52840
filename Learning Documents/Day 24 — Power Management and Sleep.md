@@ -1,4 +1,4 @@
-# 2026-06-08 - Power Management and Sleep
+# Day 24 — Power Management and Sleep
 
 ## Goal
 Configure Zephyr's power management subsystem to put the nRF52840 into
@@ -100,7 +100,7 @@ Battery life is a critical spec for wearables and IoT sensors. A coin cell
    and boot-counts (NVS from Day 22) increments on each wake.
 
 ## Example folder
-See `src/2026-06-08_Power_Management_Sleep` for the day's code.
+View the complete source code on GitHub: [src/2026-06-08_Power_Management_Sleep](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-08_Power_Management_Sleep)
 
 ## Next topic
 You now have all the core Zephyr building blocks. Advanced topics:

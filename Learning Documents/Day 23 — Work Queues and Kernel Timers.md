@@ -1,4 +1,4 @@
-# 2026-06-07 - Work Queues and Kernel Timers
+# Day 23 — Work Queues and Kernel Timers
 
 ## Goal
 Learn how to schedule deferred and periodic work in Zephyr using kernel timers
@@ -104,7 +104,7 @@ build responsive, non-blocking firmware without complex thread management.
 3. Create a dedicated work queue and move heavy logging there.
 
 ## Example folder
-See `src/2026-06-07_Work_Queues_and_Timers` for the day's code.
+View the complete source code on GitHub: [src/2026-06-07_Work_Queues_and_Timers](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-07_Work_Queues_and_Timers)
 
 ## Next topic
 Tomorrow we configure Zephyr's power management to put the nRF52840 into

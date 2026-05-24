@@ -1,4 +1,4 @@
-# 2026-05-28 - Zephyr Shell Subsystem
+# Day 13 — Zephyr Shell Subsystem
 
 ## Goal
 Use Zephyr's built-in Shell subsystem to add an interactive command-line interface to your firmware, accessible over UART or USB.
@@ -86,7 +86,7 @@ A shell interface is invaluable for calibration, diagnostics, and field testing.
 3. Add a `read temp` subcommand that prints a simulated temperature value.
 
 ## Example folder
-See `src/2026-05-28_Zephyr_Shell` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-28_Zephyr_Shell](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-28_Zephyr_Shell)
 
 ## Next topic
 Tomorrow we read data from a real I2C sensor and log it using everything learned so far.

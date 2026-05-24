@@ -1,4 +1,4 @@
-# 2026-05-27 - CBOR Encoding and Sending Data over USB
+# Day 12 — CBOR Encoding over USB
 
 ## Goal
 Use the CBOR (Concise Binary Object Representation) format to encode structured sensor data on the nRF52840 and transmit it over the USB CDC-ACM virtual serial port established in Day 11.
@@ -87,7 +87,7 @@ CBOR is the encoding of choice for CoAP, SenML, SUIT firmware updates, and many 
 3. Extend to an array of 5 historical readings inside the same CBOR packet.
 
 ## Example folder
-See `src/2026-05-27_CBOR_over_USB` for the day's code example.
+View the complete source code on GitHub: [src/2026-05-27_CBOR_over_USB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-27_CBOR_over_USB)
 
 ## Next topic
 Tomorrow we explore the Zephyr Shell subsystem to build an interactive command-line interface over UART or USB.

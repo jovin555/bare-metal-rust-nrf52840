@@ -1,4 +1,4 @@
-# 2026-05-16 - Introduction to Zephyr RTOS
+# Day 1 — Introduction to Zephyr RTOS
 
 ## Goal
 Learn what Zephyr is, why it exists, and how it differs from other embedded RTOS options.
@@ -28,7 +28,7 @@ Understanding these concepts helps you read Zephyr examples, choose the right bo
 3. Make a list of one board and one feature you want to explore next.
 
 ## Example folder
-See `src/2026-05-16_Introduction_to_Zephyr_RTOS` for the day's code example and folder structure.
+View the complete source code on GitHub: [src/2026-05-16_Introduction_to_Zephyr_RTOS](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-16_Introduction_to_Zephyr_RTOS)
 
 ## Next topic
 Tomorrow, we will explore Zephyr project structure and the build system in depth.

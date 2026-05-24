@@ -1,4 +1,4 @@
-# 2026-05-31 - KXTJ3-1057 Accelerometer with CBOR Encoding over USB
+# Day 16 — KXTJ3-1057 Accelerometer CBOR over USB
 
 ## Goal
 Extend the KXTJ3-1057 driver from Day 15 to encode accelerometer readings as CBOR
@@ -76,7 +76,7 @@ descriptors.
 4. Switch to `accel range 4` mid-stream and confirm the mg values change scale.
 
 ## Example folder
-See `src/2026-05-31_KXTJ3_CBOR_USB` for the complete firmware and Python decoder.
+View the complete source code on GitHub: [src/2026-05-31_KXTJ3_CBOR_USB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-05-31_KXTJ3_CBOR_USB)
 
 ## Next topic
 Future topics: BLE peripheral advertising sensor data, MCUboot OTA updates,

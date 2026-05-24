@@ -1,4 +1,4 @@
-# 2026-06-05 - PWM LED Dimming
+# Day 21 — PWM LED Dimming
 
 ## Goal
 Use Zephyr's PWM API to smoothly dim and brighten an LED using a breathing
@@ -110,7 +110,7 @@ means you change a pin number in the overlay, not in the application code.
 3. Wire a buzzer to a PWM pin and play a 1 kHz tone.
 
 ## Example folder
-See `src/2026-06-05_PWM_LED_Dimming` for the day's code.
+View the complete source code on GitHub: [src/2026-06-05_PWM_LED_Dimming](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-05_PWM_LED_Dimming)
 
 ## Next topic
 Tomorrow we store configuration data in internal flash using Zephyr's NVS.
