@@ -29,7 +29,8 @@ void consumer_fn(void *a, void *b, void *c)
 K_THREAD_DEFINE(producer, 1024, producer_fn, NULL, NULL, NULL, 5, 0, 0);
 K_THREAD_DEFINE(consumer, 1024, consumer_fn, NULL, NULL, NULL, 5, 0, 0);
 
-void main(void)
+int main(void)
 {
     LOG_INF("Day 8: threads and synchronization started");
+    return 0;
 }

@@ -33,7 +33,7 @@ static void status_handler(struct k_work *work)
     k_work_reschedule(&status_work, K_SECONDS(3));
 }
 
-void main(void)
+int main(void)
 {
     if (!gpio_is_ready_dt(&led)) {
         LOG_ERR("LED GPIO not ready");
@@ -48,4 +48,5 @@ void main(void)
     k_work_schedule(&status_work, K_SECONDS(3));
 
     LOG_INF("Day 23: timers and work queues running");
+    return 0;
 }

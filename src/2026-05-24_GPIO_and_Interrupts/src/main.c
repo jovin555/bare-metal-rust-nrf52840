@@ -14,7 +14,7 @@ void btn_handler(const struct device *dev, struct gpio_callback *cb, uint32_t pi
     LOG_INF("Day 9: button pressed, LED toggled");
 }
 
-void main(void)
+int main(void)
 {
     if (!gpio_is_ready_dt(&led) || !gpio_is_ready_dt(&btn)) {
         LOG_ERR("Day 9: GPIO device not ready");
@@ -28,4 +28,5 @@ void main(void)
     gpio_add_callback(btn.port, &btn_cb);
 
     LOG_INF("Day 9: GPIO interrupt ready, press sw0");
+    return 0;
 }

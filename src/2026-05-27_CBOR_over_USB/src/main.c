@@ -34,7 +34,7 @@ static bool encode_sensor_frame(uint8_t *buf, size_t buf_size, size_t *out_len,
     return ok;
 }
 
-void main(void)
+int main(void)
 {
     if (!device_is_ready(usb_uart) || usb_enable(NULL) != 0) {
         return;
@@ -65,4 +65,5 @@ void main(void)
         seq++;
         k_msleep(1000);
     }
+    return 0;
 }

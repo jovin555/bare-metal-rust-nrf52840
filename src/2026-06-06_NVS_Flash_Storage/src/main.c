@@ -40,7 +40,7 @@ static int nvs_init(void)
     return rc;
 }
 
-void main(void)
+int main(void)
 {
     if (nvs_init() != 0) {
         return;
@@ -68,4 +68,5 @@ void main(void)
         LOG_INF("Loaded config: range=±%dg  rate=%dms  name=%s",
                 cfg.range_g, cfg.sample_rate_ms, cfg.name);
     }
+    return 0;
 }

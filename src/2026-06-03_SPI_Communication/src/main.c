@@ -12,7 +12,7 @@ LOG_MODULE_REGISTER(day19, LOG_LEVEL_INF);
 
 static const struct device *flash_dev = DEVICE_DT_GET(FLASH_NODE);
 
-void main(void)
+int main(void)
 {
     if (!device_is_ready(flash_dev)) {
         LOG_ERR("Day 19: SPI flash not ready — check wiring");
@@ -52,4 +52,5 @@ void main(void)
     } else {
         LOG_ERR("Verification FAILED");
     }
+    return 0;
 }

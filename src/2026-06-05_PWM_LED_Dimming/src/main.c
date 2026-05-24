@@ -10,7 +10,7 @@ static const struct pwm_dt_spec pwm_led =
 #define STEPS      50
 #define STEP_MS    20
 
-void main(void)
+int main(void)
 {
     if (!pwm_is_ready_dt(&pwm_led)) {
         LOG_ERR("Day 21: PWM device not ready");
@@ -34,4 +34,5 @@ void main(void)
             k_msleep(STEP_MS);
         }
     }
+    return 0;
 }

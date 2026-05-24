@@ -4,7 +4,7 @@
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/uart.h>
 
-void main(void)
+int main(void)
 {
     const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 
@@ -19,4 +19,5 @@ void main(void)
     while (1) {
         k_sleep(K_SECONDS(2));
     }
+    return 0;
 }

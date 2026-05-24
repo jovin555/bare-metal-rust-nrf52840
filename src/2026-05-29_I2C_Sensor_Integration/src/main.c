@@ -7,7 +7,7 @@ LOG_MODULE_REGISTER(day14, LOG_LEVEL_INF);
 
 static const struct device *bme280 = DEVICE_DT_GET_ANY(bosch_bme280);
 
-void main(void)
+int main(void)
 {
     if (!device_is_ready(bme280)) {
         LOG_ERR("Day 14: BME280 not ready — check wiring and I2C address in app.overlay");
@@ -35,4 +35,5 @@ void main(void)
 
         k_msleep(2000);
     }
+    return 0;
 }

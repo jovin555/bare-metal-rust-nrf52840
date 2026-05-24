@@ -7,7 +7,7 @@ LOG_MODULE_REGISTER(day11, LOG_LEVEL_INF);
 
 static const struct device *usb_uart = DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
 
-void main(void)
+int main(void)
 {
     if (!device_is_ready(usb_uart)) {
         return;
@@ -42,4 +42,5 @@ void main(void)
 
         k_msleep(1000);
     }
+    return 0;
 }

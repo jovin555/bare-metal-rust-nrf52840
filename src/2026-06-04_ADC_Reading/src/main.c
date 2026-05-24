@@ -7,7 +7,7 @@ LOG_MODULE_REGISTER(day20, LOG_LEVEL_INF);
 static const struct adc_dt_spec adc_ch =
     ADC_DT_SPEC_GET(DT_PATH(zephyr_user));
 
-void main(void)
+int main(void)
 {
     if (!adc_is_ready_dt(&adc_ch)) {
         LOG_ERR("Day 20: ADC not ready");
@@ -40,4 +40,5 @@ void main(void)
         }
         k_msleep(1000);
     }
+    return 0;
 }

@@ -53,6 +53,41 @@ BLE minimum: `CONFIG_BT=y` plus `CONFIG_BT_PERIPHERAL=y` or `CONFIG_BT_CENTRAL=y
 
 ---
 
+### `*** BUS FAULT *** Imprecise data bus error` on every boot
+
+**Cause:** Two issues that affect all projects on Zephyr 4.x:
+
+1. `CONFIG_COMMON_LIBC_MALLOC_ARENA_SIZE=-1` (the default) tells Zephyr to use
+   all remaining RAM for the libc malloc heap. On Zephyr 4.4.x the "remaining
+   RAM" calculation overshoots the 256 KB boundary by a few bytes, causing
+   `sys_heap_init` to write its tail chunk past `0x20040000` — a bus fault.
+
+2. `void main(void)` is invalid in Zephyr 4.x — `main()` must return `int`.
+   Using `void` can corrupt the stack on return.
+
+**Fix:** Add to every `prj.conf`:
+```kconfig
+CONFIG_COMMON_LIBC_MALLOC_ARENA_SIZE=0
+```
+And change every `main.c` signature:
+```c
+/* wrong — Zephyr 4.x requires int */
+void main(void) { ... }
+
+/* correct */
+int main(void) { ...; return 0; }
+```
+Also remove `CONFIG_STDOUT_CONSOLE=y` if present — it enables a printf
+path that allocates from the same heap and is not needed when using `printk`.
+
+**Diagnostic:** Open the `.map` file and check that `sys_heap_init` is at the
+faulting PC address. Confirm with:
+```
+grep "sys_heap_init" build/zephyr/zephyr.map
+```
+
+---
+
 ## Runtime and flashing errors
 
 ### `LIBUSB_ERROR_ACCESS` when running `west flash`

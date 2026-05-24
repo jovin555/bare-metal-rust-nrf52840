@@ -53,10 +53,11 @@ SHELL_CMD_REGISTER(ping, NULL, "Reply with pong", cmd_ping);
 SHELL_CMD_REGISTER(led,  &led_cmds,  "LED control", NULL);
 SHELL_CMD_REGISTER(read, &read_cmds, "Read sensors", NULL);
 
-void main(void)
+int main(void)
 {
     if (gpio_is_ready_dt(&led)) {
         gpio_pin_configure_dt(&led, GPIO_OUTPUT_INACTIVE);
     }
     LOG_INF("Day 13: shell ready — type 'help'");
+    return 0;
 }

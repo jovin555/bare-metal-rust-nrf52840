@@ -22,7 +22,7 @@ static void enter_system_off(void)
     k_sleep(K_FOREVER);
 }
 
-void main(void)
+int main(void)
 {
     if (!gpio_is_ready_dt(&led) || !gpio_is_ready_dt(&btn)) {
         LOG_ERR("GPIO not ready");
@@ -54,4 +54,5 @@ void main(void)
         /* Sleep — Zephyr PM subsystem enters low-power state automatically */
         k_msleep(5000);
     }
+    return 0;
 }

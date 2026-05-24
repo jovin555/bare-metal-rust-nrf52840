@@ -148,7 +148,7 @@ SHELL_STATIC_SUBCMD_SET_CREATE(accel_cmds,
 
 SHELL_CMD_REGISTER(accel, &accel_cmds, "KXTJ3-1057 accelerometer commands", NULL);
 
-void main(void)
+int main(void)
 {
     if (!device_is_ready(i2c_dev)) {
         LOG_ERR("I2C not ready — verify board DTS pin assignments");
@@ -173,4 +173,5 @@ void main(void)
     } else {
         LOG_INF("KXTJ3 ready — type 'accel help'");
     }
+    return 0;
 }

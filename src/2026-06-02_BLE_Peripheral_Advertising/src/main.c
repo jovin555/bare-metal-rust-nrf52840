@@ -49,7 +49,7 @@ BT_CONN_CB_DEFINE(conn_callbacks) = {
     .disconnected = disconnected,
 };
 
-void main(void)
+int main(void)
 {
     int rc = bt_enable(NULL);
     if (rc) {
@@ -58,4 +58,5 @@ void main(void)
     }
     LOG_INF("Day 18: BLE stack ready");
     start_advertising();
+    return 0;
 }

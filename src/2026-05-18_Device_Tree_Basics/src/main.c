@@ -3,7 +3,7 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 
-void main(void)
+int main(void)
 {
     const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
 
@@ -15,4 +15,5 @@ void main(void)
     while (1) {
         k_msleep(1000);
     }
+    return 0;
 }
