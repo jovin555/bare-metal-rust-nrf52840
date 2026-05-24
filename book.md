@@ -1,4 +1,5 @@
-# Zephyr RTOS — 24-Day Hands-On Course
+# Embedded Firmware with Zephyr RTOS
+## A Practical Guide from LED to Custom PCB
 
 > **Author:** Jovin  
 > **Target hardware:** Nordic nRF52840 DK  

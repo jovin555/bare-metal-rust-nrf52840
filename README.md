@@ -1,4 +1,5 @@
-# Zephyr RTOS — 24-Day Hands-On Course
+# Embedded Firmware with Zephyr RTOS
+### A Practical Guide from LED to Custom PCB
 
 A practical, project-based course for embedded engineers learning **Zephyr RTOS** on the **nRF52840 development kit**, progressing from blinking an LED to building a custom PCB firmware with BLE, accelerometer, CBOR, power management, and more.
 
