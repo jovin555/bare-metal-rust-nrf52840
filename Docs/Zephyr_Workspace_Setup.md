@@ -1,8 +1,8 @@
 # Zephyr Workspace Setup Guide
 
-Setup steps for the latest Zephyr inside `myworkspace/` using Python 3.10.
+Setup steps for the latest Zephyr inside `myworkspace/` using Python 3.12.
 
-> **Note:** Python 3.9 (Anaconda) is too old — Zephyr's scripts require `patool>=2.0.0` which needs Python ≥ 3.10. Use the system `python3.10` instead.
+> **Note:** Python 3.12 is required. Zephyr's CMake modules call `find_package(Python3 3.12)` — using 3.9 or 3.10 will cause a CMake error at build time. Use the system `python3.12` (`/usr/bin/python3.12`).
 
 ---
 
@@ -10,7 +10,7 @@ Setup steps for the latest Zephyr inside `myworkspace/` using Python 3.10.
 
 ```bash
 cd /home/jovin/workspace/My-Zephyr-project/myworkspace
-python3.10 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 pip install west
 ```
@@ -89,7 +89,7 @@ export ZEPHYR_BASE=/home/jovin/workspace/My-Zephyr-project/myworkspace/zephyr
 
 ## Notes
 
-- **Use `python3.10`**, not Anaconda's `python3.9` — Zephyr requires `patool>=2.0.0` which needs Python ≥ 3.10.
+- **Use `python3.12`** (`/usr/bin/python3.12`) — Zephyr's CMake requires Python ≥ 3.12. Using 3.9 or 3.10 causes a CMake `Could NOT find Python3` error at build time.
 - `ZEPHYR_BASE` must **not** be set before running `west init` — unset it first if it points to `~/ncs/v2.4.2`.
 - The `.venv` folder is inside `myworkspace/` which is excluded from git (`.gitignore`).
 - If `west` is not found after activating the venv, re-run `pip install west` inside the activated environment.
