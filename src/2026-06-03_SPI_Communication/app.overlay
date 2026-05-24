@@ -1,0 +1,23 @@
+/*
+ * W25Q SPI NOR flash wired to SPI1:
+ *   MOSI -> P0.20
+ *   MISO -> P0.21
+ *   SCK  -> P0.19
+ *   CS   -> P0.17
+ * Update pins to match your schematic.
+ */
+&spi1 {
+	status = "okay";
+	cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+
+	w25q: w25q@0 {
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <8000000>;
+		size = <DT_SIZE_M(1)>;
+		jedec-id = [ef 40 15];
+		has-dpd;
+		t-enter-dpd = <3000>;
+		t-exit-dpd = <30000>;
+	};
+};
