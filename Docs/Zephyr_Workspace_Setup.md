@@ -47,13 +47,13 @@ ls ~/zephyr-sdk-* 2>/dev/null && echo "SDK found" || echo "SDK not installed"
 If not installed:
 ```bash
 cd ~
-wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/zephyr-sdk-0.17.0_linux-x86_64.tar.xz
-tar xf zephyr-sdk-0.17.0_linux-x86_64.tar.xz
-cd zephyr-sdk-0.17.0
+wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v1.0.1/zephyr-sdk-1.0.1_linux-x86_64.tar.xz
+tar xf zephyr-sdk-1.0.1_linux-x86_64.tar.xz
+cd zephyr-sdk-1.0.1
 ./setup.sh
 ```
 
-> **Note:** SDK 0.17.0 is required for Zephyr 4.x. SDK 0.16.8 is incompatible — it will cause a CMake "could not find Zephyr-sdk compatible with version 1.0" error.
+> **Note:** SDK 1.0.1 is required for Zephyr 4.x. SDK 0.16.8 and 0.17.x are incompatible — they cause a CMake "could not find Zephyr-sdk compatible with version 1.0" error.
 
 ---
 
