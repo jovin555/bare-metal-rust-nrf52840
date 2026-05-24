@@ -1,7 +1,21 @@
 # Embedded Firmware with Zephyr RTOS
 ### A Practical Guide from LED to Custom PCB
 
-A practical, project-based course for embedded engineers learning **Zephyr RTOS** on the **nRF52840 development kit**, progressing from blinking an LED to building a custom PCB firmware with BLE, accelerometer, CBOR, power management, and more.
+**Embedded Firmware with Zephyr RTOS** is a hands-on, 24-day guide for engineers who want to build real firmware on the nRF52840 — not just blink an LED, but ship production-ready code.
+
+Each day introduces one concept, one working example, and one buildable project. You start with the Zephyr build system and Device Tree basics, then progress through threads, GPIO interrupts, USB communication, CBOR encoding, and BLE advertising. By the end, you will have written a custom I2C accelerometer driver, streamed live sensor data to a PC over USB, defined your own PCB board target, and put the processor into sub-µA sleep — the same techniques used in commercial wearables and IoT products.
+
+**What's inside:**
+- 24 structured lessons with working Zephyr source code for every day
+- Custom driver development for sensors not supported by upstream Zephyr
+- USB CDC-ACM, CBOR encoding, and a Python decoder tool for live data visualization
+- BLE peripheral advertising, SPI flash, ADC, PWM, NVS storage, and power management
+- A complete custom PCB board definition — ready to adapt to your own hardware
+- Setup guide covering Zephyr 4.x, West, and SDK 1.0.1 on Linux
+
+**Who this is for:** Embedded engineers with C experience who are new to Zephyr, developers moving from bare-metal or Arduino to an RTOS, and hardware engineers writing firmware for their own nRF52840-based designs.
+
+**Hardware required:** Nordic nRF52840 DK and a USB cable.
 
 > **Target hardware:** Nordic nRF52840 DK (`nrf52840dk/nrf52840`)
 > **Zephyr version:** 4.x (latest main branch)
