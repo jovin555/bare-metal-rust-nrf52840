@@ -47,7 +47,7 @@ ls ~/zephyr-sdk-* 2>/dev/null && echo "SDK found" || echo "SDK not installed"
 If not installed:
 ```bash
 cd ~
-wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v1.0.1/zephyr-sdk-1.0.1_linux-x86_64.tar.xz
+wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v1.0.1/zephyr-sdk-1.0.1_linux-x86_64_gnu.tar.xz
 tar xf zephyr-sdk-1.0.1_linux-x86_64.tar.xz
 cd zephyr-sdk-1.0.1
 ./setup.sh

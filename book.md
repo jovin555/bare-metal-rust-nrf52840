@@ -27,6 +27,64 @@ Each day introduces one concept, one working example, and one buildable project.
 ---
 
 
+---
+
+# Before You Begin — Workspace Setup
+
+Before Day 1, make sure your Zephyr development environment is ready. This book targets **Zephyr 4.x** with **SDK 1.0.1** on Ubuntu 22.04.
+
+## Requirements
+- Ubuntu 22.04 (or WSL2 on Windows)
+- Nordic nRF52840 DK + USB cable (data, not charge-only)
+- Python 3.12 (`/usr/bin/python3.12`)
+- ~5 GB free disk space
+
+## Quick setup (copy-paste)
+
+```bash
+# 1. Create workspace and virtual environment
+mkdir -p ~/workspace/myworkspace
+cd ~/workspace/myworkspace
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install west
+
+# 2. Initialize Zephyr
+unset ZEPHYR_BASE
+west init .
+west update
+pip install -r zephyr/scripts/requirements.txt
+
+# 3. Download Zephyr SDK 1.0.1
+cd ~
+wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v1.0.1/zephyr-sdk-1.0.1_linux-x86_64.tar.xz
+tar xf zephyr-sdk-1.0.1_linux-x86_64.tar.xz
+cd zephyr-sdk-1.0.1
+./setup.sh
+```
+
+## Session setup (run at the start of every terminal session)
+
+```bash
+source ~/workspace/myworkspace/.venv/bin/activate
+export ZEPHYR_BASE=~/workspace/myworkspace/zephyr
+```
+
+## Verify the setup
+
+```bash
+cd ~/workspace/myworkspace/zephyr/samples/basic/blinky
+west build -b nrf52840dk/nrf52840
+# Expected: "ninja: build stopped: subcommand failed." only if board not connected
+# Expected: build/zephyr/zephyr.elf exists on success
+```
+
+> **Troubleshooting:** If you see `Could NOT find Python3 (version >= 3.12)`, your venv was created with the wrong Python. Delete `.venv/` and re-run `python3.12 -m venv .venv`. If you see `Could not find Zephyr-sdk compatible with version 1.0`, you have an old SDK — download SDK 1.0.1 above.
+
+For full details see the [Workspace Setup Guide](https://github.com/jovin555/My-Zephyr-project/blob/master/Docs/Zephyr_Workspace_Setup.md).
+
+---
+
 # Day 1 — Introduction to Zephyr RTOS
 
 ## Goal
@@ -243,6 +301,37 @@ Zephyr provides a device model where peripherals are exposed as `struct device` 
 2. Get the device binding in `main()`
 3. Use the driver API for operations like GPIO set/reset or I2C read/write
 
+### Error handling — always check return values
+
+Every Zephyr driver API returns an integer: `0` on success, negative errno on failure. Always check it:
+
+```c
+int ret;
+
+ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+if (ret < 0) {
+    LOG_ERR("Failed to configure LED GPIO: %d", ret);
+    return;
+}
+
+ret = gpio_pin_set_dt(&led, 1);
+if (ret < 0) {
+    LOG_ERR("Failed to set LED: %d", ret);
+}
+```
+
+Common error codes:
+| Code | Meaning |
+|------|---------|
+| `-ENODEV` | Device not found or not ready |
+| `-EIO` | I2C/SPI communication failure |
+| `-EINVAL` | Invalid argument passed |
+| `-EBUSY` | Bus or resource busy |
+| `-ENOTSUP` | Operation not supported by this driver |
+
+Use `LOG_ERR("msg: %d", ret)` rather than `printk` so log levels can silence it in production builds. Never silently ignore a negative return — it masks hardware faults.
+
+
 ## Why this matters
 Correct device binding ensures your code works with the actual hardware and is portable across boards.
 
@@ -344,6 +433,42 @@ k_msgq_get(&my_queue, &value, K_FOREVER);
 - Negative priorities are cooperative (must yield explicitly)
 - Priorities 0–14 are preemptive by default
 
+### Stack sizing guide
+
+The stack size passed to `K_THREAD_DEFINE` is one of the most common sources of crashes. Too small → silent stack overflow → corrupted memory.
+
+**Rules of thumb:**
+
+| Thread workload | Minimum stack |
+|----------------|--------------|
+| Simple loop, no I/O | 512 bytes |
+| Uses `printk` or `LOG_*` | 1024 bytes |
+| Calls I2C, SPI, or ADC drivers | 2048 bytes |
+| Uses USB or Shell subsystem | 4096 bytes |
+| Uses BLE stack | 4096–8192 bytes |
+
+Always add 25% headroom. Check actual usage at runtime:
+
+```c
+#include <zephyr/kernel.h>
+
+extern struct k_thread my_thread_data;
+
+void print_stack_usage(void)
+{
+    size_t unused;
+    k_thread_stack_space_get(&my_thread_data, &unused);
+    printk("Stack unused: %zu bytes\n", unused);
+}
+```
+
+Enable `CONFIG_THREAD_ANALYZER=y` and `CONFIG_THREAD_ANALYZER_AUTO=y` in `prj.conf` to automatically log all thread stack usage at boot.
+
+**Priority inversion and deadlock:**
+- If thread A (low priority) holds a mutex and thread B (high priority) waits on it, B is blocked indefinitely — this is priority inversion. Use `K_MUTEX_DEFINE` with `CONFIG_MUTEX_ENABLE_PRIORITY_INHERITANCE=y` to mitigate it.
+- Deadlock occurs when thread A waits on thread B and thread B waits on thread A. Always lock mutexes in the same order across all threads.
+
+
 ## Why this matters
 Almost every real embedded application uses multiple threads: one for sensors, one for communication, one for UI. Understanding Zephyr threading is essential before building any non-trivial application.
 
@@ -380,7 +505,11 @@ Zephyr's GPIO API abstracts hardware pin control across all supported boards. Pi
 **Controlling an LED:**
 ```c
 const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios);
-gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+int ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
+if (ret < 0) {
+    LOG_ERR("LED config failed: %d", ret);
+    return;
+}
 gpio_pin_set_dt(&led, 1);   // on
 gpio_pin_set_dt(&led, 0);   // off
 gpio_pin_toggle_dt(&led);   // toggle
@@ -627,7 +756,11 @@ const struct device *usb_uart = DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
 
 void main(void)
 {
-    usb_enable(NULL);
+    int ret = usb_enable(NULL);
+    if (ret < 0) {
+        LOG_ERR("USB enable failed: %d", ret);
+        return;
+    }
 
     // Wait for DTR — the PC has opened the COM port
     uint32_t dtr = 0;
@@ -908,7 +1041,11 @@ void read_sensor(void)
 {
     struct sensor_value temp, press, hum;
 
-    sensor_sample_fetch(bme);
+    int ret = sensor_sample_fetch(bme);
+    if (ret < 0) {
+        LOG_ERR("Sensor fetch failed: %d", ret);
+        return;
+    }
     sensor_channel_get(bme, SENSOR_CHAN_AMBIENT_TEMP, &temp);
     sensor_channel_get(bme, SENSOR_CHAN_PRESS,        &press);
     sensor_channel_get(bme, SENSOR_CHAN_HUMIDITY,     &hum);
@@ -1159,112 +1296,140 @@ low-power sleep with sensor wake-on-motion.
 ---
 
 
-# Day 17 — KXTJ3-1057 CBOR Accelerometer on Custom PCB
+# Day 17 — BLE GATT Services
 
 ## Goal
-Deploy the KXTJ3-1057 CBOR-over-USB application from Day 16 onto a custom PCB
-board target instead of the nRF52840 DK. This teaches you how to move from a
-development kit to a production board definition.
+Expose sensor data over Bluetooth Low Energy using a custom GATT service with
+readable and notifiable characteristics, so a phone can subscribe to live updates.
 
 ## What you will learn
-- How to define a custom board that includes the KXTJ3-1057 as a named DTS node
-- How to assign specific PCB pins in the Device Tree and pinctrl
-- How to build and flash the full CBOR accelerometer app targeting `my_custom_board`
-- How the board definition and application code stay cleanly separated
+- The difference between advertising (Day 18) and GATT services
+- How to define a custom GATT service and characteristics in Zephyr
+- How to send notifications when data changes
+- How to read a characteristic value from nRF Connect on a phone
 
-## What changes compared to Day 16
-| Aspect | Day 16 (DK) | Day 17 (Custom PCB) |
-|--------|-------------|---------------------|
-| Build target | `nrf52840dk/nrf52840` | `my_custom_board` |
-| Pin assignments | DK defaults | Your PCB schematic |
-| KXTJ3 DTS node | app.overlay | board `.dts` file |
-| USB D+/D- pins | DK defaults | PCB-specific pinctrl |
-| `app.overlay` | adds KXTJ3 + USB node | only adds CDC-ACM shell node |
+## Overview
+GATT (Generic Attribute Profile) is the data layer of BLE. A **service** groups
+related **characteristics**. Each characteristic has a value, permissions (read/write/notify),
+and optional descriptors. Zephyr's `BT_GATT_SERVICE_DEFINE` macro registers a
+static service at compile time.
 
-## Custom PCB assumptions
-This example assumes an nRF52840-based custom PCB with:
+### Custom service UUIDs
+Generate your own 128-bit UUIDs (use uuidgenerator.net):
+```c
+/* Service UUID */
+#define BT_UUID_SENSOR_VAL     BT_UUID_128_ENCODE(0x12345678, 0x1234, 0x5678, 0x1234, 0x56789abcdef0)
+#define BT_UUID_SENSOR      BT_UUID_DECLARE_128(BT_UUID_SENSOR_VAL)
 
-| Signal    | nRF52840 GPIO | Reason |
-|-----------|--------------|--------|
-| I2C SDA   | P0.04        | Chosen to avoid UART conflict |
-| I2C SCL   | P0.05        | Adjacent to SDA |
-| UART TX   | P0.06        | Debug UART to USB-serial chip |
-| UART RX   | P0.08        | |
-| LED       | P1.10        | Active-low status LED |
-| KXTJ3 INT | P0.11        | Optional data-ready interrupt |
-
-**Update these to match your actual schematic before building.**
-
-## Board definition highlights
-
-### my_custom_board.dts — KXTJ3 defined at board level
-```dts
-&i2c0 {
-    status = "okay";
-    kxtj3: kxtj3@e {
-        compatible = "i2c-device";
-        reg = <0x0e>;
-        label = "KXTJ3";
-    };
-};
-```
-Because the KXTJ3 is soldered to the PCB, it belongs in the board `.dts`,
-not in the application overlay. The application overlay only adds the
-USB CDC-ACM shell node.
-
-### app.overlay — only USB CDC-ACM
-```dts
-/ {
-    chosen {
-        zephyr,console    = &cdc_acm_uart0;
-        zephyr,shell-uart = &cdc_acm_uart0;
-    };
-};
-
-&zephyr_udc0 {
-    cdc_acm_uart0: cdc_acm_uart0 {
-        compatible = "zephyr,cdc-acm-uart";
-        label = "CDC_ACM_0";
-    };
-};
+/* Accelerometer characteristic UUID */
+#define BT_UUID_ACCEL_VAL     BT_UUID_128_ENCODE(0x12345678, 0x1234, 0x5678, 0x1234, 0x56789abcdef1)
+#define BT_UUID_ACCEL       BT_UUID_DECLARE_128(BT_UUID_ACCEL_VAL)
 ```
 
-## Building for the custom board
-```bash
-# CMakeLists.txt sets BOARD_ROOT to pick up the local boards/ directory
-west build -b my_custom_board
-west flash
+### Defining the GATT service
+```c
+#include <zephyr/bluetooth/gatt.h>
+
+static int16_t accel_data[3] = {0, 0, 1000}; /* X, Y, Z in mg */
+
+/* Read handler — called when central reads the characteristic */
+static ssize_t read_accel(struct bt_conn *conn,
+                          const struct bt_gatt_attr *attr,
+                          void *buf, uint16_t len, uint16_t offset)
+{
+    return bt_gatt_attr_read(conn, attr, buf, len, offset,
+                             accel_data, sizeof(accel_data));
+}
+
+BT_GATT_SERVICE_DEFINE(sensor_svc,
+    BT_GATT_PRIMARY_SERVICE(BT_UUID_SENSOR),
+    BT_GATT_CHARACTERISTIC(BT_UUID_ACCEL,
+        BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
+        BT_GATT_PERM_READ,
+        read_accel, NULL, accel_data),
+    BT_GATT_CCC(NULL, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
+);
 ```
 
-## Python decoder (unchanged from Day 16)
-```bash
-pip install pyserial cbor2 matplotlib
-python3 tools/decode_accel.py --port /dev/ttyACM0 --plot
+### Sending notifications
+```c
+void notify_accel(int16_t x, int16_t y, int16_t z)
+{
+    accel_data[0] = x;
+    accel_data[1] = y;
+    accel_data[2] = z;
+
+    /* Notify all connected centrals that have enabled notifications */
+    bt_gatt_notify(NULL, &sensor_svc.attrs[1], accel_data, sizeof(accel_data));
+}
 ```
 
-## Migration checklist
-When moving any application from a DK to a custom board:
-- [ ] Copy the closest upstream board DTS as a starting point
-- [ ] Update all pin numbers to match your schematic
-- [ ] Move any always-present peripherals (sensors, displays) from overlay to board DTS
-- [ ] Keep application-specific overlays for things that could vary (USB, console routing)
-- [ ] Verify `west build` succeeds with `-b my_custom_board`
-- [ ] Check `build/zephyr/zephyr.dts` to confirm pin assignments are resolved correctly
+### prj.conf
+```kconfig
+CONFIG_BT=y
+CONFIG_BT_PERIPHERAL=y
+CONFIG_BT_DEVICE_NAME="ZephyrSensor"
+CONFIG_BT_GATT_DYNAMIC_DB=n
+CONFIG_LOG=y
+```
+
+### Full application flow
+```c
+void main(void)
+{
+    int ret = bt_enable(NULL);
+    if (ret < 0) {
+        LOG_ERR("BT enable failed: %d", ret);
+        return;
+    }
+
+    /* Start advertising so centrals can find and connect */
+    bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), sd, ARRAY_SIZE(sd));
+
+    while (1) {
+        /* Update sensor data and notify connected clients */
+        notify_accel(read_x(), read_y(), read_z());
+        k_msleep(200);
+    }
+}
+```
+
+### Reading from a phone
+1. Open **nRF Connect** (Android/iOS) → scan → connect to "ZephyrSensor"
+2. Expand the **Unknown Service** (your custom UUID)
+3. Tap the **read** button on the characteristic → see raw bytes
+4. Tap the **notify** button (bell icon) → live updates appear as data changes
+
+### Decoding the characteristic value
+The value is 6 bytes: three `int16_t` values in little-endian order.
+In Python (over USB or file):
+```python
+import struct
+raw = bytes.fromhex("F4FF2200E803")   # example
+x, y, z = struct.unpack('<hhh', raw)
+print(f"X={x} Y={y} Z={z} mg")       # X=-12 Y=34 Z=1000 mg
+```
 
 ## Why this matters
-Every shipped product has a custom board definition. Learning to separate board
-hardware description from application logic is the key skill that makes your
-firmware portable and maintainable across board revisions.
+GATT services are the foundation of every BLE product — heart rate monitors,
+fitness trackers, environmental sensors, and industrial IoT all use this pattern.
+Once you define a service, any BLE central (phone, PC, gateway) can read or
+subscribe to your data without a custom app.
+
+## Practice tasks
+1. Flash and connect with nRF Connect — confirm the service appears and read returns data.
+2. Enable notifications and shake the board — confirm live X/Y/Z updates on the phone.
+3. Add a second characteristic for the measurement range (single byte, read-only).
+4. Add a **write** characteristic that lets the phone set the accelerometer range.
 
 ## Example folder
-View the complete source code on GitHub: [src/2026-06-01_KXTJ3_CBOR_Custom_PCB](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-01_KXTJ3_CBOR_Custom_PCB)
+View the complete source code on GitHub: [src/2026-06-01_BLE_GATT_Service](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-01_BLE_GATT_Service)
 
 ## Next topic
-Future topics: BLE peripheral advertising, MCUboot OTA firmware updates,
-low-power wake-on-motion using KXTJ3 interrupt pin.
+Tomorrow we cover BLE peripheral advertising in depth and learn how to handle
+connect/disconnect events gracefully.
 
 ---
-
 
 # Day 18 — BLE Peripheral Advertising
 
@@ -2059,8 +2224,506 @@ Battery life is a critical spec for wearables and IoT sensors. A coin cell
 View the complete source code on GitHub: [src/2026-06-08_Power_Management_Sleep](https://github.com/jovin555/My-Zephyr-project/tree/master/src/2026-06-08_Power_Management_Sleep)
 
 ## Next topic
-You now have all the core Zephyr building blocks. Advanced topics:
-MCUboot OTA updates, BLE GATT services, LwM2M cloud integration.
+You now have all the core Zephyr building blocks. The capstone project in
+Days 25–27 combines everything into a complete wireless sensor node.
+
+---
+
+# Capstone Project — Days 25–27: Wireless Sensor Node
+
+This three-day capstone combines BME280 environmental sensing, BLE GATT
+notifications, NVS persistence, and System OFF sleep into a single
+production-ready firmware application. By the end you will have a
+battery-powered node that wakes every 60 seconds, reads temperature and
+humidity, broadcasts the values over BLE, stores a boot count and last
+reading in NVS, then returns to sub-µA sleep.
+
+**Hardware required:**
+- Nordic nRF52840 DK
+- BME280 breakout (I2C, 3.3 V)
+- Coin cell holder or LiPo (optional, for real power measurements)
+
+---
+
+## Day 25 — Sensor + NVS Integration
+
+**Goal:** Read BME280 and persist a boot counter plus last reading to NVS.
+
+### prj.conf
+
+```kconfig
+CONFIG_I2C=y
+CONFIG_SENSOR=y
+CONFIG_BME280=y
+CONFIG_NVS=y
+CONFIG_FLASH=y
+CONFIG_FLASH_PAGE_LAYOUT=y
+CONFIG_FLASH_MAP=y
+CONFIG_LOG=y
+CONFIG_MAIN_STACK_SIZE=2048
+```
+
+### main.c
+
+```c
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/sensor.h>
+#include <zephyr/fs/nvs.h>
+#include <zephyr/storage/flash_map.h>
+#include <zephyr/logging/log.h>
+
+LOG_MODULE_REGISTER(capstone, LOG_LEVEL_INF);
+
+#define NVS_PARTITION        storage_partition
+#define NVS_PARTITION_DEVICE FIXED_PARTITION_DEVICE(NVS_PARTITION)
+#define NVS_PARTITION_OFFSET FIXED_PARTITION_OFFSET(NVS_PARTITION)
+
+#define NVS_ID_BOOT_COUNT  1
+#define NVS_ID_LAST_TEMP   2
+#define NVS_ID_LAST_HUM    3
+
+static struct nvs_fs fs;
+
+static int nvs_init_fs(void)
+{
+    struct flash_pages_info info;
+    int ret;
+
+    fs.flash_device = NVS_PARTITION_DEVICE;
+    fs.offset = NVS_PARTITION_OFFSET;
+    ret = flash_get_page_info_by_offs(fs.flash_device, fs.offset, &info);
+    if (ret < 0) {
+        return ret;
+    }
+    fs.sector_size = info.size;
+    fs.sector_count = 4U;
+    return nvs_mount(&fs);
+}
+
+int main(void)
+{
+    const struct device *bme = DEVICE_DT_GET_ANY(bosch_bme280);
+    struct sensor_value temp, hum;
+    uint32_t boot_count = 0;
+    int32_t last_temp_mdeg = 0, last_hum_m = 0;
+    int ret;
+
+    if (!device_is_ready(bme)) {
+        LOG_ERR("BME280 not ready");
+        return -ENODEV;
+    }
+
+    ret = nvs_init_fs();
+    if (ret < 0) {
+        LOG_ERR("NVS mount failed: %d", ret);
+        return ret;
+    }
+
+    /* Read persistent boot count */
+    nvs_read(&fs, NVS_ID_BOOT_COUNT, &boot_count, sizeof(boot_count));
+    nvs_read(&fs, NVS_ID_LAST_TEMP, &last_temp_mdeg, sizeof(last_temp_mdeg));
+    nvs_read(&fs, NVS_ID_LAST_HUM,  &last_hum_m,    sizeof(last_hum_m));
+
+    LOG_INF("Boot #%u, last T=%d.%03d C, H=%d.%03d %%",
+            boot_count,
+            last_temp_mdeg / 1000, abs(last_temp_mdeg % 1000),
+            last_hum_m / 1000,     abs(last_hum_m % 1000));
+
+    boot_count++;
+    nvs_write(&fs, NVS_ID_BOOT_COUNT, &boot_count, sizeof(boot_count));
+
+    ret = sensor_sample_fetch(bme);
+    if (ret < 0) {
+        LOG_ERR("Fetch failed: %d", ret);
+        return ret;
+    }
+    sensor_channel_get(bme, SENSOR_CHAN_AMBIENT_TEMP, &temp);
+    sensor_channel_get(bme, SENSOR_CHAN_HUMIDITY,     &hum);
+
+    last_temp_mdeg = temp.val1 * 1000 + temp.val2 / 1000;
+    last_hum_m     = hum.val1  * 1000 + hum.val2  / 1000;
+
+    nvs_write(&fs, NVS_ID_LAST_TEMP, &last_temp_mdeg, sizeof(last_temp_mdeg));
+    nvs_write(&fs, NVS_ID_LAST_HUM,  &last_hum_m,    sizeof(last_hum_m));
+
+    LOG_INF("T=%.2f C  H=%.2f %%",
+            sensor_value_to_double(&temp),
+            sensor_value_to_double(&hum));
+
+    return 0;
+}
+```
+
+**What to observe:** Open a serial terminal. Each power cycle (or reset)
+should increment the boot counter and log the previous reading.
+
+---
+
+## Day 26 — BLE GATT Environmental Service
+
+**Goal:** Expose temperature and humidity as BLE GATT characteristics so a
+phone can subscribe to notifications.
+
+### prj.conf additions
+
+Add to the Day 25 `prj.conf`:
+
+```kconfig
+CONFIG_BT=y
+CONFIG_BT_PERIPHERAL=y
+CONFIG_BT_DEVICE_NAME="SensorNode"
+CONFIG_BT_GATT_DYNAMIC_DB=n
+```
+
+### ble_sensor.h
+
+```c
+#pragma once
+#include <stdint.h>
+
+void ble_sensor_init(void);
+void ble_sensor_notify(int32_t temp_mdeg, int32_t hum_m);
+```
+
+### ble_sensor.c
+
+```c
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/gatt.h>
+#include <zephyr/logging/log.h>
+#include "ble_sensor.h"
+
+LOG_MODULE_REGISTER(ble_sensor, LOG_LEVEL_INF);
+
+/* Custom 128-bit UUID for the sensor service */
+#define BT_UUID_SENSOR_SERVICE_VAL \
+    BT_UUID_128_ENCODE(0xaabbccdd, 0x1234, 0x5678, 0xabcd, 0x1234567890ab)
+#define BT_UUID_TEMP_CHAR_VAL \
+    BT_UUID_128_ENCODE(0xaabbccdd, 0x1234, 0x5678, 0xabcd, 0x1234567890ac)
+#define BT_UUID_HUM_CHAR_VAL \
+    BT_UUID_128_ENCODE(0xaabbccdd, 0x1234, 0x5678, 0xabcd, 0x1234567890ad)
+
+#define BT_UUID_SENSOR_SERVICE BT_UUID_DECLARE_128(BT_UUID_SENSOR_SERVICE_VAL)
+#define BT_UUID_TEMP_CHAR      BT_UUID_DECLARE_128(BT_UUID_TEMP_CHAR_VAL)
+#define BT_UUID_HUM_CHAR       BT_UUID_DECLARE_128(BT_UUID_HUM_CHAR_VAL)
+
+static int32_t temp_val;
+static int32_t hum_val;
+
+static ssize_t read_temp(struct bt_conn *conn,
+                         const struct bt_gatt_attr *attr,
+                         void *buf, uint16_t len, uint16_t offset)
+{
+    return bt_gatt_attr_read(conn, attr, buf, len, offset,
+                             &temp_val, sizeof(temp_val));
+}
+
+static ssize_t read_hum(struct bt_conn *conn,
+                        const struct bt_gatt_attr *attr,
+                        void *buf, uint16_t len, uint16_t offset)
+{
+    return bt_gatt_attr_read(conn, attr, buf, len, offset,
+                             &hum_val, sizeof(hum_val));
+}
+
+BT_GATT_SERVICE_DEFINE(sensor_svc,
+    BT_GATT_PRIMARY_SERVICE(BT_UUID_SENSOR_SERVICE),
+    BT_GATT_CHARACTERISTIC(BT_UUID_TEMP_CHAR,
+        BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
+        BT_GATT_PERM_READ, read_temp, NULL, &temp_val),
+    BT_GATT_CCC(NULL, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
+    BT_GATT_CHARACTERISTIC(BT_UUID_HUM_CHAR,
+        BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
+        BT_GATT_PERM_READ, read_hum, NULL, &hum_val),
+    BT_GATT_CCC(NULL, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
+);
+
+static const struct bt_data ad[] = {
+    BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR),
+    BT_DATA(BT_DATA_NAME_COMPLETE, CONFIG_BT_DEVICE_NAME,
+            sizeof(CONFIG_BT_DEVICE_NAME) - 1),
+};
+
+void ble_sensor_init(void)
+{
+    int ret = bt_enable(NULL);
+    if (ret < 0) {
+        LOG_ERR("bt_enable: %d", ret);
+        return;
+    }
+    ret = bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), NULL, 0);
+    if (ret < 0) {
+        LOG_ERR("adv_start: %d", ret);
+    }
+    LOG_INF("BLE advertising as \"%s\"", CONFIG_BT_DEVICE_NAME);
+}
+
+void ble_sensor_notify(int32_t temp_mdeg, int32_t hum_m)
+{
+    temp_val = temp_mdeg;
+    hum_val  = hum_m;
+    bt_gatt_notify(NULL, &sensor_svc.attrs[1], &temp_val, sizeof(temp_val));
+    bt_gatt_notify(NULL, &sensor_svc.attrs[3], &hum_val,  sizeof(hum_val));
+}
+```
+
+Call `ble_sensor_init()` and `ble_sensor_notify(last_temp_mdeg, last_hum_m)`
+from `main.c` after reading the sensor.
+
+**What to observe:** Use the nRF Connect app on your phone. Scan for
+"SensorNode", connect, and subscribe to both characteristics. You should
+see temperature (in milli-degrees C) and humidity (in milli-%) update on
+each notification.
+
+---
+
+## Day 27 — Sleep and Wake-Up Loop
+
+**Goal:** Add a 60-second sleep cycle. The node wakes, reads the sensor,
+sends a BLE notification burst, then enters System OFF (or deep sleep).
+
+### Strategy
+
+For a real battery-powered product you want the shortest possible active
+window. The pattern is:
+
+1. Boot (from reset or GPIO wake)
+2. Read NVS boot count, increment, write back
+3. Read BME280
+4. Initialize BLE, advertise, send notifications
+5. Wait 2 seconds for a central to connect and read
+6. Disable BLE
+7. Enter System OFF — wake via RTC alarm or external GPIO
+
+For the DK (no external RTC) we use `k_sleep` with `CONFIG_PM=y` to
+demonstrate the current savings without requiring external hardware.
+
+### Timed sleep version (DK-friendly)
+
+```c
+#include <zephyr/pm/pm.h>
+
+/* At the end of main(), after BLE notify: */
+LOG_INF("Sleeping 60 s...");
+k_sleep(K_SECONDS(60));
+/* Loop back: in a real product, trigger System OFF here */
+```
+
+### System OFF version (production pattern)
+
+```c
+#include <zephyr/pm/pm.h>
+
+static void enter_system_off(void)
+{
+    LOG_INF("Entering System OFF");
+    /* Flush log backend before power-off */
+    k_sleep(K_MSEC(100));
+    pm_state_force(0u, &(struct pm_state_info){PM_STATE_SOFT_OFF, 0, 0});
+    /* Enable GPIO wakeup source (button sw0) */
+    const struct device *gpio = DEVICE_DT_GET(DT_NODELABEL(gpio0));
+    gpio_pin_interrupt_configure(gpio, 11, GPIO_INT_LEVEL_LOW);
+    /* The next line does not return */
+    k_sleep(K_FOREVER);
+}
+```
+
+Call `enter_system_off()` at the end of `main()`.
+
+### Measuring current
+
+| State                  | Typical current  |
+|------------------------|-----------------|
+| Active + BLE TX        | 8–12 mA         |
+| `k_sleep` with PM      | 5–15 µA         |
+| System OFF             | 0.4–0.7 µA      |
+
+Use a Nordic PPK2 or a bench supply with current measurement to verify.
+
+### Practice tasks
+
+1. Flash the full capstone firmware (Days 25–27 combined).
+2. Confirm boot count increments on each reset.
+3. Connect with nRF Connect — verify temperature and humidity notifications.
+4. Enable `CONFIG_PM=y` and measure current during the 60-second sleep.
+5. Switch to System OFF — measure the sub-µA quiescent current.
+6. Add a third NVS key for "last wakeup reason" (reset vs GPIO).
+
+## Example folder
+View the complete source code on GitHub: [src/capstone_wireless_sensor_node](https://github.com/jovin555/My-Zephyr-project/tree/master/src/capstone_wireless_sensor_node)
+
+---
+
+# Appendix A — Troubleshooting
+
+Common build and runtime errors with solutions.
+
+## Build errors
+
+### `Could NOT find Zephyr-sdk compatible with version 1.0`
+**Cause:** SDK 0.16.x or 0.17.x is installed instead of SDK 1.0.1.
+**Fix:**
+```bash
+ls ~/zephyr-sdk-*    # check what's installed
+# Download SDK 1.0.1 from:
+# https://github.com/zephyrproject-rtos/sdk-ng/releases/tag/v1.0.1
+cd ~ && tar xf zephyr-sdk-1.0.1_linux-x86_64_gnu.tar.xz
+cd zephyr-sdk-1.0.1 && ./setup.sh
+```
+
+### `Could NOT find Python3 (found version "3.10")`
+**Cause:** Zephyr 4.x requires Python 3.12.
+**Fix:**
+```bash
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install west
+```
+
+### `west: command not found`
+**Cause:** Virtual environment not activated.
+**Fix:**
+```bash
+source /home/jovin/workspace/My-Zephyr-project/myworkspace/.venv/bin/activate
+```
+
+### `ZEPHYR_BASE is not set`
+**Cause:** `ZEPHYR_BASE` environment variable missing.
+**Fix:**
+```bash
+export ZEPHYR_BASE=/home/jovin/workspace/My-Zephyr-project/myworkspace/zephyr
+```
+
+### `DT_NODELABEL(...) node does not exist`
+**Cause:** The device tree label doesn't match the board's `.dts` file.
+**Fix:** Check `zephyr/boards/nordic/nrf52840dk/nrf52840dk_nrf52840.dts` for the
+correct node label. Use `west build -- -DDTC_OVERLAY_FILE=app.overlay` to
+add or override nodes in your app overlay.
+
+### `undefined reference to 'bt_enable'`
+**Cause:** `CONFIG_BT=y` not set in `prj.conf`.
+**Fix:** Add the required Kconfig options for the feature you are using.
+BLE minimum: `CONFIG_BT=y`, `CONFIG_BT_PERIPHERAL=y` (or `CONFIG_BT_CENTRAL=y`).
+
+---
+
+## Runtime / flashing errors
+
+### `LIBUSB_ERROR_ACCESS` when running `west flash`
+**Cause:** User lacks permissions to access the J-Link USB device.
+**Fix:**
+```bash
+sudo usermod -aG plugdev $USER
+# Log out and back in, or run:
+newgrp plugdev
+```
+
+### Serial terminal shows garbage / no output
+**Cause:** Wrong baud rate (Zephyr default is 115200) or wrong port.
+**Fix:**
+```bash
+ls /dev/ttyACM*          # find the port
+screen /dev/ttyACM0 115200
+# or
+minicom -D /dev/ttyACM0 -b 115200
+```
+
+### Application crashes with `*** USAGE FAULT ***`
+**Cause:** Stack overflow, null pointer dereference, or misaligned access.
+**Fix:** Enable stack sentinel in `prj.conf`:
+```kconfig
+CONFIG_STACK_SENTINEL=y
+CONFIG_THREAD_ANALYZER=y
+```
+Run, check logs for "Stack sentinel violated" or per-thread stack usage.
+
+### `sensor_sample_fetch` returns `-5` (EIO)
+**Cause:** I2C address mismatch or SDA/SCL wiring error.
+**Fix:**
+1. Check the sensor's I2C address against the overlay (e.g., `reg = <0x0e>`).
+2. Verify wiring: SDA → P0.26, SCL → P0.27 on the nRF52840 DK.
+3. Use a logic analyser or `i2cdetect` (if shell enabled) to scan the bus.
+
+### BLE not advertising (no device found in nRF Connect)
+**Cause:** `bt_enable` or `bt_le_adv_start` returned an error, or
+`CONFIG_BT_PERIPHERAL=y` is missing.
+**Fix:** Check the log for `bt_enable:` or `adv_start:` error codes.
+Common: `-22` (EINVAL) means the advertising parameters are invalid.
+
+### NVS write returns `-28` (ENOSPC)
+**Cause:** NVS partition is full or `sector_count` is too small.
+**Fix:** Increase `sector_count` in your `nvs_fs` struct, or call
+`nvs_clear(&fs)` to erase all entries and start fresh.
+
+---
+
+# Appendix B — Glossary
+
+**ADC** — Analog-to-Digital Converter. Converts a voltage on a GPIO pin to
+a digital value. Used in Day 20 to read battery voltage.
+
+**BLE** — Bluetooth Low Energy. A short-range wireless protocol optimised
+for battery-powered devices. Used in Days 17–18 and 26.
+
+**CBOR** — Concise Binary Object Representation (RFC 7049). A binary
+encoding format used in Day 12 and 16 to serialise sensor data over USB.
+
+**CDC-ACM** — USB Communications Device Class – Abstract Control Model.
+The USB class that makes the nRF52840 appear as a virtual serial port
+(`/dev/ttyACM0`) on the host. Used in Days 11–13, 15–16.
+
+**DTS / Device Tree Source** — A hardware description file (`.dts` /
+`.overlay`) that tells Zephyr which peripherals exist, where they are
+mapped, and how they are connected. Used throughout the course.
+
+**GATT** — Generic Attribute Profile. The BLE protocol layer that defines
+services and characteristics. Used in Days 17 and 26.
+
+**GPIO** — General Purpose Input/Output. Digital pins that can be driven
+high/low or read as input. Used in Days 5, 9, and throughout.
+
+**I2C** — Inter-Integrated Circuit. A two-wire serial bus (SDA + SCL) used
+to communicate with sensors. Used in Days 14–17 and 25–27.
+
+**ISR** — Interrupt Service Routine. A function called directly by
+hardware when an interrupt fires. In Zephyr, ISRs must not sleep or
+allocate memory.
+
+**Kconfig** — The configuration system inherited from Linux. Boolean and
+integer options that enable/disable subsystems at build time. Configured
+via `prj.conf`.
+
+**NVS** — Non-Volatile Storage. A simple key-value store that uses a
+dedicated flash partition to persist data across resets. Used in Days 22
+and 25–27.
+
+**PPK2** — Nordic Power Profiler Kit 2. A USB device for measuring current
+consumption down to ~100 nA. Referenced in the power management days.
+
+**PWM** — Pulse Width Modulation. A technique for controlling average
+power to an output (e.g., LED brightness, motor speed) by varying the
+duty cycle of a digital signal. Used in Day 21.
+
+**SDK** — Software Development Kit. Here refers to the Zephyr SDK
+(version 1.0.1) which bundles the ARM GCC toolchain, OpenOCD, and J-Link
+tools used to compile and flash firmware.
+
+**SPI** — Serial Peripheral Interface. A four-wire serial bus (MOSI, MISO,
+SCK, CS) used for high-speed peripherals such as flash memory. Used in
+Day 19 with the W25Q SPI flash.
+
+**System OFF** — The deepest power state on the nRF52840. The CPU is fully
+stopped and RAM is not retained. Current is typically 0.4–0.7 µA. Wake is
+via GPIO or reset. Used in Day 24 and the capstone.
+
+**West** — Zephyr's meta-build tool. Manages the workspace, fetches
+modules with `west update`, and wraps CMake/Ninja with `west build` and
+`west flash`.
+
+**Work Queue** — A Zephyr kernel object that executes `k_work` items in a
+dedicated thread. Used in Day 23 to defer processing from ISR context to
+a thread.
 
 ---
 
