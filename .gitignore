@@ -7,3 +7,4 @@ __pycache__/
 myworkspace/
 .claude/
 book/
+analyze_project.py
