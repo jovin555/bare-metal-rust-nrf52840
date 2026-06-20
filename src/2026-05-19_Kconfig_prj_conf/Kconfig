@@ -1,0 +1,10 @@
+mainmenu "Day 4 — Kconfig and prj.conf"
+
+config DAY4_GREETING
+    string "Custom greeting message printed at startup"
+    default "Hello from Kconfig!"
+
+config DAY4_SLEEP_INTERVAL_MS
+    int "Sleep interval between log messages (ms)"
+    default 1000
+    range 100 10000

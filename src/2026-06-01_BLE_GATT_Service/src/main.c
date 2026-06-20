@@ -1,177 +1,99 @@
 #include <zephyr/kernel.h>
-#include <zephyr/usb/usb_device.h>
-#include <zephyr/drivers/uart.h>
-#include <zephyr/drivers/i2c.h>
-#include <zephyr/shell/shell.h>
+#include <zephyr/bluetooth/bluetooth.h>
+#include <zephyr/bluetooth/conn.h>
+#include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/gatt.h>
 #include <zephyr/logging/log.h>
-#include <zcbor_encode.h>
-#include <stdlib.h>
-#include "kxtj3.h"
 
 LOG_MODULE_REGISTER(day17, LOG_LEVEL_INF);
 
 /*
- * i2c0 and the KXTJ3 node are defined in the custom board DTS.
- * The application code does not need to know which pins are used —
- * that is the board's responsibility.
+ * Custom 128-bit service UUID:  12345678-1234-5678-1234-56789abcdef0
+ * Custom characteristic UUID:   12345678-1234-5678-1234-56789abcdef1
  */
-static const struct device *i2c_dev  = DEVICE_DT_GET(DT_NODELABEL(i2c0));
-static const struct device *usb_uart = DEVICE_DT_GET(DT_NODELABEL(cdc_acm_uart0));
+#define BT_UUID_SENSOR_SVC  BT_UUID_DECLARE_128( \
+    BT_UUID_128_ENCODE(0x12345678, 0x1234, 0x5678, 0x1234, 0x56789abcdef0))
+#define BT_UUID_SENSOR_VAL  BT_UUID_DECLARE_128( \
+    BT_UUID_128_ENCODE(0x12345678, 0x1234, 0x5678, 0x1234, 0x56789abcdef1))
 
-#define KXTJ3_ADDR   KXTJ3_ADDR_LOW
-#define CBOR_BUF_LEN 64
+static uint32_t sensor_counter;
+static bool     notify_enabled;
 
-static uint32_t seq_num;
-static uint8_t  current_range_g = 2;
-
-static void usb_send(const uint8_t *data, size_t len)
+static ssize_t read_sensor_val(struct bt_conn *conn,
+                               const struct bt_gatt_attr *attr,
+                               void *buf, uint16_t len, uint16_t offset)
 {
-    for (size_t i = 0; i < len; i++) {
-        uart_poll_out(usb_uart, data[i]);
-    }
-    uart_poll_out(usb_uart, '\n');
+    return bt_gatt_attr_read(conn, attr, buf, len, offset,
+                             &sensor_counter, sizeof(sensor_counter));
 }
 
-static int encode_and_send(const struct shell *sh)
+static void ccc_changed(const struct bt_gatt_attr *attr, uint16_t value)
 {
-    struct kxtj3_data data;
-    int rc = kxtj3_read(i2c_dev, KXTJ3_ADDR, &data);
-    if (rc) {
-        if (sh) shell_error(sh, "Sensor read failed: %d", rc);
-        return rc;
-    }
-
-    uint8_t buf[CBOR_BUF_LEN];
-    ZCBOR_STATE_E(states, 2, buf, sizeof(buf), 1);
-
-    bool ok = zcbor_map_start_encode(states, 5)
-           && zcbor_tstr_put_lit(states, "seq") && zcbor_uint32_put(states, seq_num)
-           && zcbor_tstr_put_lit(states, "x")   && zcbor_int32_put(states, data.x_mg)
-           && zcbor_tstr_put_lit(states, "y")   && zcbor_int32_put(states, data.y_mg)
-           && zcbor_tstr_put_lit(states, "z")   && zcbor_int32_put(states, data.z_mg)
-           && zcbor_tstr_put_lit(states, "rng") && zcbor_uint32_put(states, current_range_g)
-           && zcbor_map_end_encode(states, 5);
-
-    if (!ok) {
-        if (sh) shell_error(sh, "CBOR encode failed");
-        return -ENOMEM;
-    }
-
-    size_t len = (size_t)(states[0].payload - buf);
-    usb_send(buf, len);
-    seq_num++;
-    return 0;
+    notify_enabled = (value == BT_GATT_CCC_NOTIFY);
+    LOG_INF("Notifications %s", notify_enabled ? "enabled" : "disabled");
 }
 
-static int cmd_accel_whoami(const struct shell *sh, size_t argc, char **argv)
-{
-    uint8_t id;
-    int rc = kxtj3_who_am_i(i2c_dev, KXTJ3_ADDR, &id);
-    if (rc) {
-        shell_error(sh, "I2C error: %d — check board DTS pin assignments", rc);
-        return rc;
-    }
-    if (id == KXTJ3_WHO_AM_I_VAL) {
-        shell_print(sh, "WHO_AM_I = 0x%02X  OK (KXTJ3-1057 detected)", id);
-    } else {
-        shell_error(sh, "WHO_AM_I = 0x%02X  UNEXPECTED (want 0x%02X)", id, KXTJ3_WHO_AM_I_VAL);
-    }
-    return 0;
-}
-
-static int cmd_accel_read(const struct shell *sh, size_t argc, char **argv)
-{
-    struct kxtj3_data data;
-    int rc = kxtj3_read(i2c_dev, KXTJ3_ADDR, &data);
-    if (rc) {
-        shell_error(sh, "Read failed: %d", rc);
-        return rc;
-    }
-    shell_print(sh, "X: %5d mg    Y: %5d mg    Z: %5d mg", data.x_mg, data.y_mg, data.z_mg);
-    return 0;
-}
-
-static int cmd_accel_cbor(const struct shell *sh, size_t argc, char **argv)
-{
-    int rc = encode_and_send(sh);
-    if (rc == 0) {
-        shell_print(sh, "CBOR frame sent (seq=%u)", seq_num - 1);
-    }
-    return rc;
-}
-
-static int cmd_accel_stream(const struct shell *sh, size_t argc, char **argv)
-{
-    int n = (argc >= 2) ? atoi(argv[1]) : 10;
-    if (n <= 0 || n > 1000) {
-        shell_error(sh, "count must be 1-1000");
-        return -EINVAL;
-    }
-    shell_print(sh, "Streaming %d CBOR frames...", n);
-    for (int i = 0; i < n; i++) {
-        encode_and_send(sh);
-        k_msleep(200);
-    }
-    shell_print(sh, "Done. %d frames sent.", n);
-    return 0;
-}
-
-static int cmd_accel_range(const struct shell *sh, size_t argc, char **argv)
-{
-    if (argc < 2) {
-        shell_error(sh, "Usage: accel range <2|4|8|16>");
-        return -EINVAL;
-    }
-    int g = atoi(argv[1]);
-    if (g != 2 && g != 4 && g != 8 && g != 16) {
-        shell_error(sh, "Valid ranges: 2, 4, 8, 16");
-        return -EINVAL;
-    }
-    int rc = kxtj3_set_range(i2c_dev, KXTJ3_ADDR, (uint8_t)g);
-    if (rc == 0) {
-        current_range_g = (uint8_t)g;
-        shell_print(sh, "Range set to ±%dg", g);
-    } else {
-        shell_error(sh, "Failed: %d", rc);
-    }
-    return rc;
-}
-
-SHELL_STATIC_SUBCMD_SET_CREATE(accel_cmds,
-    SHELL_CMD(whoami, NULL, "Read WHO_AM_I register",          cmd_accel_whoami),
-    SHELL_CMD(read,   NULL, "Single reading as plain text",    cmd_accel_read),
-    SHELL_CMD(cbor,   NULL, "Send one CBOR frame over USB",    cmd_accel_cbor),
-    SHELL_CMD(stream, NULL, "Stream CBOR frames: stream <n>",  cmd_accel_stream),
-    SHELL_CMD(range,  NULL, "Set range: range <2|4|8|16>",     cmd_accel_range),
-    SHELL_SUBCMD_SET_END
+BT_GATT_SERVICE_DEFINE(sensor_svc,
+    BT_GATT_PRIMARY_SERVICE(BT_UUID_SENSOR_SVC),
+    BT_GATT_CHARACTERISTIC(BT_UUID_SENSOR_VAL,
+                           BT_GATT_CHRC_READ | BT_GATT_CHRC_NOTIFY,
+                           BT_GATT_PERM_READ,
+                           read_sensor_val, NULL, &sensor_counter),
+    BT_GATT_CCC(ccc_changed, BT_GATT_PERM_READ | BT_GATT_PERM_WRITE),
 );
 
-SHELL_CMD_REGISTER(accel, &accel_cmds, "KXTJ3-1057 accelerometer commands", NULL);
+static const struct bt_data ad[] = {
+    BT_DATA_BYTES(BT_DATA_FLAGS, BT_LE_AD_GENERAL | BT_LE_AD_NO_BREDR),
+    BT_DATA_BYTES(BT_DATA_UUID128_ALL,
+        BT_UUID_128_ENCODE(0x12345678, 0x1234, 0x5678, 0x1234, 0x56789abcdef0)),
+};
+
+static void connected(struct bt_conn *conn, uint8_t err)
+{
+    if (err) {
+        LOG_ERR("Connection failed (err %d)", err);
+        return;
+    }
+    LOG_INF("Connected");
+}
+
+static void disconnected(struct bt_conn *conn, uint8_t reason)
+{
+    LOG_INF("Disconnected (reason 0x%02x)", reason);
+    notify_enabled = false;
+    bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), NULL, 0);
+}
+
+BT_CONN_CB_DEFINE(conn_callbacks) = {
+    .connected    = connected,
+    .disconnected = disconnected,
+};
 
 int main(void)
 {
-    if (!device_is_ready(i2c_dev)) {
-        LOG_ERR("I2C not ready — verify board DTS pin assignments");
-        return;
+    int rc = bt_enable(NULL);
+    if (rc) {
+        LOG_ERR("BLE enable failed (err %d)", rc);
+        return rc;
     }
+    LOG_INF("Day 17: BLE GATT service ready");
 
-    if (!device_is_ready(usb_uart) || usb_enable(NULL) != 0) {
-        LOG_ERR("USB init failed");
-        return;
+    rc = bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), NULL, 0);
+    if (rc) {
+        LOG_ERR("Advertising failed (err %d)", rc);
+        return rc;
     }
+    LOG_INF("Advertising as \"%s\"", CONFIG_BT_DEVICE_NAME);
 
-    uint32_t dtr = 0;
-    while (!dtr) {
-        uart_line_ctrl_get(usb_uart, UART_LINE_CTRL_DTR, &dtr);
-        k_msleep(100);
-    }
+    while (1) {
+        k_msleep(1000);
+        sensor_counter++;
 
-    LOG_INF("Day 17: Custom PCB — USB CBOR shell ready");
-
-    if (kxtj3_init(i2c_dev, KXTJ3_ADDR) != 0) {
-        LOG_ERR("KXTJ3 init failed — verify SDA/SCL pins in board DTS");
-    } else {
-        LOG_INF("KXTJ3 ready — type 'accel help'");
+        if (notify_enabled) {
+            bt_gatt_notify(NULL, &sensor_svc.attrs[2],
+                           &sensor_counter, sizeof(sensor_counter));
+            LOG_INF("Notified counter=%u", sensor_counter);
+        }
     }
     return 0;
 }
