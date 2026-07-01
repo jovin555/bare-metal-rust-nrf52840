@@ -1,0 +1,18 @@
+[package]
+name = "day10-rtic-concurrency"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+nrf52840-hal = "0.16"
+rtic = { version = "1.1", features = ["thumbv7-backend"] }
+defmt = "0.3"
+defmt-rtt = "0.3"
+panic-probe = { version = "0.3", features = ["print-defmt"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+debug = 2

@@ -1,0 +1,16 @@
+[package]
+name = "day04-systick-delays"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+nrf52840-hal = "0.16"
+panic-halt = "0.2"
+embedded-hal = "0.2"
+
+[profile.release]
+opt-level = "s"
+lto = true
+debug = 2
