@@ -1,6 +1,0 @@
-if BOARD_MY_CUSTOM_BOARD
-
-config BOARD
-	default "my_custom_board"
-
-endif # BOARD_MY_CUSTOM_BOARD

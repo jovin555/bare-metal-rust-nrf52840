@@ -1,0 +1,233 @@
+[2026-06-07] Generating Day 03: Control Flow: if, loop, while, for
+  Written: day-03.md
+  Updated: index.md
+  Pushed Day 03 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-08] Generating Day 04: Ownership: The Core Mental Model
+  Written: day-04.md
+  Updated: index.md
+  Pushed Day 04 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-09] Generating Day 05: References & Borrowing
+  Written: day-05.md
+  Updated: index.md
+  Pushed Day 05 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-10] Generating Day 06: The Slice Type
+  Written: day-06.md
+  Updated: index.md
+  Pushed Day 06 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-11] Generating Day 07: Structs: Defining & Instantiating
+  Written: day-07.md
+  Updated: index.md
+  Pushed Day 07 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-12] Generating Day 08: Methods on Structs
+  Written: day-08.md
+  Updated: index.md
+  Pushed Day 08 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-13] Generating Day 09: Enums & Pattern Matching with match
+  Written: day-09.md
+  Updated: index.md
+  Pushed Day 09 to GitHub.
+  Done. Site will rebuild at https://jovin555.github.io/rust-blog/
+[2026-06-14] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-15] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-16] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-17] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-18] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-19] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-20] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-21] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-22] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-23] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
+[2026-06-24] Generating Day 01: Variables, Mutability & Basic Types
+Traceback (most recent call last):
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 197, in <module>
+    main()
+    ~~~~^^
+  File "/home/eva/workspace/Learning_rust/generate_day.py", line 187, in main
+    out_file.write_text(post)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 557, in write_text
+    return PathBase.write_text(self, data, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_abc.py", line 651, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 539, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/eva/workspace/rust-blog/content/day-01.md'
